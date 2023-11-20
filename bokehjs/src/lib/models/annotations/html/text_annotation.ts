@@ -72,13 +72,13 @@ export abstract class TextAnnotationView extends AnnotationView {
       `)
     } else {
       const panel = this.plot_view.frame
-      const [rsx, rsy] = panel.bbox.relativize(sx, sy)
+      const rsp = panel.bbox.relativize({x: sx, y: sy})
 
       this.position.replace(`
       :host {
         position: absolute;
-        left: ${rsx}px;
-        top: ${rsy}px;
+        left: ${rsp.x}px;
+        top: ${rsp.y}px;
       }
       `)
     }
