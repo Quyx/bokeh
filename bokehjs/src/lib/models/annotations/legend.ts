@@ -75,6 +75,11 @@ export class LegendView extends AnnotationView {
     this._resize_observer.observe(this.el, {box: "border-box"})
   }
 
+  override async lazy_initialize(): Promise<void> {
+    await super.lazy_initialize()
+    await this._rebuild_title()
+  }
+
   override remove(): void {
     this._resize_observer.disconnect()
     super.remove()
@@ -84,8 +89,13 @@ export class LegendView extends AnnotationView {
     super.connect_signals()
     this.connect(this.model.change, () => this.rerender())
 
-    const {items} = this.model.properties
-    this.on_transitive_change(items, () => this._render_items(), {recursive: true})
+    const {items, title} = this.model.properties
+    this.on_transitive_change(items, async () => await this._render_items(), {recursive: true})
+    this.on_transitive_change(title, async () => {
+      await this._rebuild_title()
+      // TODO: Only title append code needs to be run
+      this.rerender()
+    })
   }
 
   protected _bbox: BBox = new BBox()
@@ -260,6 +270,12 @@ export class LegendView extends AnnotationView {
     this.grid_el.append(...this.entries.map(({el}) => el))
   }
 
+  async _rebuild_title(): Promise<void> {
+    const title_el = div({class: legend_css.title}, await i18n.t(this.model.title ?? ""))
+    this.title_el.remove()
+    this.title_el = title_el
+  }
+
   override render(): void {
     super.render()
 
@@ -268,10 +284,6 @@ export class LegendView extends AnnotationView {
 
     this.el.classList.toggle(legend_css.interactive, this.is_interactive)
     this.el.classList.toggle(legend_css.vertical, vertical)
-
-    const title_el = div({class: legend_css.title}, this.model.title)
-    this.title_el.remove()
-    this.title_el = title_el
 
     // can't simply use `rotate`, because rotation doesn't affect layout
     const {writing_mode, rotate} = (() => {
@@ -385,10 +397,10 @@ export class LegendView extends AnnotationView {
 
     this.shadow_el.append(...(() => {
       switch (this.model.title_location) {
-        case "above": return [title_el, this.grid_el]
-        case "below": return [this.grid_el, title_el]
-        case "left":  return [title_el, this.grid_el]
-        case "right": return [this.grid_el, title_el]
+        case "above": return [this.title_el, this.grid_el]
+        case "below": return [this.grid_el, this.title_el]
+        case "left":  return [this.title_el, this.grid_el]
+        case "right": return [this.grid_el, this.title_el]
       }
     })())
 
@@ -480,8 +492,8 @@ export class LegendView extends AnnotationView {
         `)
       }
     }
-
-    this._render_items()
+    // TODO: Check a way to better handle this
+    void this._render_items()
   }
 
   override after_render(): void {
@@ -625,7 +637,8 @@ export class LegendView extends AnnotationView {
 
     if (this.is_dual_renderer && !this.parent.is_forcing_paint) {
       if (this._should_rerender_items) {
-        this._render_items()
+        // TODO: Check a way to better handle this
+        void this._render_items()
       }
       this._paint_glyphs()
     } else {
