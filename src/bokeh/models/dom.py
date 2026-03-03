@@ -53,6 +53,7 @@ __all__ = (
     "Table",
     "TableRow",
     "Text",
+    "TranslatableText",
 )
 
 #-----------------------------------------------------------------------------
@@ -75,6 +76,13 @@ class Text(DOMNode):
         super().__init__(*args, **kwargs)
 
     content = String("")
+
+class TranslatableText(Text):
+    """ DOM translatable text node. """
+
+    # explicit __init__ to support Init signatures
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
 
 @abstract
 class DOMElement(DOMNode):
