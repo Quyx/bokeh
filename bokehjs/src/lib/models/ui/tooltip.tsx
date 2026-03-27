@@ -380,7 +380,7 @@ export class TooltipView extends UIElementView {
     })()
 
     this.position.replace(`
-      :host {
+      ${this.host_selector} {
         left: ${left}px;
         top: ${top}px;
       }

@@ -7,7 +7,6 @@ import {Container} from "core/layout/grid"
 import {Location} from "core/enums"
 import type * as p from "core/properties"
 
-import type {FullDisplay} from "./layout_dom"
 import {LayoutDOM, LayoutDOMView} from "./layout_dom"
 import {TabPanel} from "./tab_panel"
 import {GridAlignmentLayout} from "./alignments"
@@ -52,10 +51,6 @@ export class TabsView extends LayoutDOMView {
     return this.model.tabs.map((tab) => tab.child)
   }
 
-  protected override _intrinsic_display(): FullDisplay {
-    return {inner: this.model.flow_mode, outer: "grid"}
-  }
-
   override _update_layout(): void {
     super._update_layout()
 
@@ -64,14 +59,14 @@ export class TabsView extends LayoutDOMView {
     this.class_list.add(tabs[loc])
 
     for (const view of this.child_views) {
-      view.parent_style.append(":host", {grid_area: "stack"})
+      view.parent_style.append(view.host_selector, {grid_area: "stack"})
     }
 
     if (this.model.link_layouts) {
       const layoutable = new Container<LayoutDOMView>()
 
       for (const view of this.child_views) {
-        view.parent_style.append(":host", {grid_area: "stack"})
+        view.parent_style.append(view.host_selector, {grid_area: "stack"})
 
         if (view instanceof LayoutDOMView && view.layout != null) {
           layoutable.add({r0: 0, c0: 0, r1: 1, c1: 1}, view)
