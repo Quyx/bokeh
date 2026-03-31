@@ -216,8 +216,8 @@ export class LegendView extends AnnotationView {
         glyph.el.classList.add(legend_css.glyph)
 
         const glyph_el = glyph.canvas
-        const label_model = this._label_models.get(label) ?? ""
-        const translatable_label = label_model ? this._label_views.get(label_model) : null
+        const label_model = this._label_models.get(label)
+        const translatable_label = label_model instanceof TranslatableText ? this._label_views.get(label_model) : null
         const label_el = div({class: legend_css.label}, translatable_label?.el)
         const overlay_el = div({class: legend_css.overlay})
         const item_el = div({class: legend_css.item}, glyph_el, label_el, overlay_el)
@@ -270,8 +270,8 @@ export class LegendView extends AnnotationView {
     let col = 0
 
     for (const entry of this.entries) {
-      const label_model = this._label_models.get(entry.label) ?? ""
-      if (label_model) {
+      const label_model = this._label_models.get(entry.label)
+      if (label_model instanceof TranslatableText) {
         this._label_views.get(label_model)?.render()
       }
       entry.el.id = `item_${row}_${col}`
