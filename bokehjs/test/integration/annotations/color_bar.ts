@@ -8,6 +8,7 @@ import {
 import {Random} from "@bokehjs/core/util/random"
 import {range} from "@bokehjs/core/util/array"
 import type {Side} from "@bokehjs/core/enums"
+import {HAlign, Location, VerticalAlign} from "@bokehjs/core/enums"
 import {np} from "@bokehjs/api/linalg"
 import {Spectral11} from "@bokehjs/api/palettes"
 
@@ -498,6 +499,113 @@ describe("ColorBar annotation", () => {
       const {view} = await display(plot)
       update_cbars(cbars)
       await view.ready
+    })
+  })
+
+  describe("should support title locations", () => {
+
+    function make_plot_and_color_mapper(){
+      const x = [1, 2, 3]
+      const y = [0, 5, 10]
+      const color_mapper = new LinearColorMapper({palette: Spectral11, low: 0, high: 10})
+  
+      const p = fig([600, 600])
+      p.scatter({x, y, size: 15, color: {field: "y", transform: color_mapper}, source: {x, y}})
+      return {p, color_mapper}
+    }
+
+    function color_bar(color_mapper: ColorMapper, attrs: Partial<ColorBar.Attrs>){
+      return new ColorBar({color_mapper, ...attrs})
+    }
+
+    function make_plot_with_horizontal_color_bar(location:Location | "auto" = "auto"){
+      const {p, color_mapper} = make_plot_and_color_mapper()
+      for (const side of ["below", "above"] as Side[]){
+        for (const halign of HAlign){
+          p.add_layout(
+            color_bar(
+              color_mapper,
+              {
+                orientation: "horizontal",
+                title_text_halign: halign,
+                title_location: location,
+                title: `colorbar title location=${location}_halign=${halign}`,
+                border_line_color: "black",
+              }
+            ), side)
+        }
+      }
+      return p
+    }
+
+    function make_plot_with_vertical_color_bar(location:Location | "auto" = "auto"){
+      const {p, color_mapper} = make_plot_and_color_mapper()
+      for (const side of ["left", "right"] as Side[]){
+        for (const valign of VerticalAlign){
+          p.add_layout(
+            color_bar(
+              color_mapper,
+              {
+                orientation: "vertical",
+                title_text_valign: valign,
+                title_location: location,
+                title: `colorbar title location=${location}_valign=${valign}`,
+                border_line_color: "black",
+              }
+            ), side)
+        }
+      }
+      return p
+    }
+
+    it("should allow horizontal alignment using title location auto on horizontal ColorBar", async () => {
+      const p = make_plot_with_horizontal_color_bar("auto")
+      await display(p)
+    })
+
+    it("should allow horizontal alignment using title location left on horizontal ColorBar", async () => {
+      const p = make_plot_with_horizontal_color_bar("left")
+      await display(p)
+    })
+
+    it("should allow horizontal alignment using title location right on horizontal ColorBar", async () => {
+      const p = make_plot_with_horizontal_color_bar("right")
+      await display(p)
+    })
+
+    it("should allow horizontal alignment using title location above on horizontal ColorBar", async () => {
+      const p = make_plot_with_horizontal_color_bar("above")
+      await display(p)
+    })
+
+    it("should allow horizontal alignment using title location below on horizontal ColorBar", async () => {
+      const p = make_plot_with_horizontal_color_bar("below")
+      await display(p)
+    })
+
+    it("should allow vertical alignment using title location auto on vertical ColorBar", async () => {
+      const p = make_plot_with_vertical_color_bar("auto")
+      await display(p)
+    })
+
+    it("should allow vertical alignment using title location left on vertical ColorBar", async () => {
+      const p = make_plot_with_vertical_color_bar("left")
+      await display(p)
+    })
+
+    it("should allow vertical alignment usingtitle location right on vertical ColorBar", async () => {
+      const p = make_plot_with_vertical_color_bar("right")
+      await display(p)
+    })
+
+    it("should allow vertical alignment using title location above on vertical ColorBar", async () => {
+      const p = make_plot_with_vertical_color_bar("above")
+      await display(p)
+    })
+
+    it("should allow vertical alignment using title location below on vertical ColorBar", async () => {
+      const p = make_plot_with_vertical_color_bar("below")
+      await display(p)
     })
   })
 })

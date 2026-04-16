@@ -195,8 +195,8 @@ class BaseColorBar(Annotation):
 
     padding = Padding(default=10, help="""
     Amount of padding (in pixels) between the color scale and color bar border.
-    This can also be specified as a tuple in the form (padding_top, padding_right,
-    padding_bottom, padding_left) to set individual padding values for each side.
+    This can also be specified as a tuple in the form (padding_left, padding_right,
+    padding_top, padding_bottom) to set individual padding values for each side.
     """)
 
     major_label_props = Include(ScalarTextProps, prefix="major_label", help="""
@@ -237,7 +237,7 @@ class BaseColorBar(Annotation):
     """)
 
     minor_tick_out = Int(default=0, help="""
-    The distance (in pixels) that major ticks should extend out of the
+    The distance (in pixels) that minor ticks should extend out of the
     main plot area.
     """)
 
