@@ -32,6 +32,10 @@
   margin: 0; // cancel native popover styling
 }
 
+:host(:where(:not(:popover-open))) {
+  display: none;
+}
+
 :host(.bk-non-interactive) {
   pointer-events: none;
 }
