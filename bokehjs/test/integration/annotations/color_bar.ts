@@ -529,7 +529,7 @@ describe("ColorBar annotation", () => {
                 orientation: "horizontal",
                 title_text_halign: halign,
                 title_location: location,
-                title: `colorbar title location=${location}_halign=${halign}`,
+                title: `colorbar title location=${location} and halign=${halign}`,
                 border_line_color: "black",
               }
             ), side)
@@ -549,7 +549,7 @@ describe("ColorBar annotation", () => {
                 orientation: "vertical",
                 title_text_valign: valign,
                 title_location: location,
-                title: `colorbar title location=${location}_valign=${valign}`,
+                title: `colorbar title location=${location} and valign=${valign}`,
                 border_line_color: "black",
               }
             ), side)
