@@ -1,14 +1,15 @@
-import {TickFormatter} from "./tick_formatter"
-import {BasicTickFormatter, unicode_replace} from "./basic_tick_formatter"
-import type {SymLogTicker} from "../tickers/symlog_ticker"
-import {to_fixed} from "core/util/string"
+import { TickFormatter } from "./tick_formatter"
+import { BasicTickFormatter } from "./basic_tick_formatter"
+// import { BasicTickFormatter, unicode_replace } from "./basic_tick_formatter"
+import type { SymLogTicker } from "../tickers/symlog_ticker"
+// import { to_fixed } from "core/util/string"
 // import type {GraphicsBox} from "core/graphics"
 // import {BaseExpo, TextBox} from "core/graphics"
 import type * as p from "core/properties"
 
 // TODO: currently copy of log_tick_formatter
 
-const {abs, round, log10} = Math
+const { abs, round, log10 } = Math
 
 export namespace SymLogTickFormatter {
   export type Attrs = p.AttrsOf<Props>
@@ -19,7 +20,7 @@ export namespace SymLogTickFormatter {
   }
 }
 
-export interface SymLogTickFormatter extends SymLogTickFormatter.Attrs {}
+export interface SymLogTickFormatter extends SymLogTickFormatter.Attrs { }
 
 export class SymLogTickFormatter extends TickFormatter {
   declare properties: SymLogTickFormatter.Props
@@ -60,11 +61,11 @@ export class SymLogTickFormatter extends TickFormatter {
       return "0"
     }
     const abs_tick = abs(tick)
+    const sign = tick < 0 ? "-" : "+"
     if (abs_tick <= 1) {
-      return unicode_replace(to_fixed(tick))
+      return `${sign}${abs_tick.toPrecision(3)}`//unicode_replace(to_fixed(tick))
     }
     const exponent = round(log10(abs_tick))
-    const sign = tick < 0 ? "-" : "+"
     const value = 10 ** exponent
     if (abs(abs_tick - value) / value < 1e-10) { // relatively close
       return `${sign}10^${exponent}`
@@ -72,7 +73,7 @@ export class SymLogTickFormatter extends TickFormatter {
     return `${sign}${abs_tick.toPrecision(3)}`
   }
 
-  doFormat(ticks: number[], _opts: {loc: number}): string[] {
+  doFormat(ticks: number[], _opts: { loc: number }): string[] {
     if (ticks.length == 0) {
       return []
     }
