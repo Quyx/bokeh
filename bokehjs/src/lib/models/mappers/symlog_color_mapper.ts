@@ -1,11 +1,9 @@
-import {ContinuousColorMapper} from "./continuous_color_mapper"
-import type {Arrayable} from "core/types"
-import {logger} from "core/logging"
-import {min, max} from "core/util/arrayable"
-import {clamp} from "core/util/math"
+import { ContinuousColorMapper } from "./continuous_color_mapper"
+import { SymLogScale } from "../scales/symlog_scale"
+import type { Arrayable } from "core/types"
+import { min, max } from "core/util/arrayable"
+import { clamp } from "core/util/math"
 import type * as p from "core/properties"
-
-// TODO: currently copy of LogColorMapper
 
 export type SymLogScanData = {
   min: number
@@ -20,7 +18,7 @@ export namespace SymLogColorMapper {
   export type Props = ContinuousColorMapper.Props
 }
 
-export interface SymLogColorMapper extends SymLogColorMapper.Attrs {}
+export interface SymLogColorMapper extends SymLogColorMapper.Attrs { }
 
 export class SymLogColorMapper extends ContinuousColorMapper {
   declare properties: SymLogColorMapper.Props
@@ -31,21 +29,15 @@ export class SymLogColorMapper extends ContinuousColorMapper {
 
   protected scan(data: Arrayable<number>, n: number): SymLogScanData {
     const low = this.low != null ? this.low : min(data)
-    if (low <= 0) {
-      logger.warn(`SymLogColorMapper detects invalid value "${low}" for parameter "low".`)
-    }
     const high = this.high != null ? this.high : max(data)
-    if (high <= 0) {
-      logger.warn(`SymLogColorMapper detects invalid value "${high}" for parameter "high".`)
-    }
-    const scale = n / Math.log(high / low)  // subtract the low offset
+    const scale = n / (SymLogScale.symlog(high) - SymLogScale.symlog(low))  // subtract the low offset
     const is_reversed = high < low
-    return {max: high, min: low, scale, is_reversed}
+    return { max: high, min: low, scale, is_reversed }
   }
 
   override index_to_value(index: number): number {
     const scan_data = this._scan_data as SymLogScanData
-    return scan_data.min * Math.exp(index / Math.abs(scan_data.scale))
+    return SymLogScale.inverse_symlog(index / scan_data.scale + SymLogScale.symlog(scan_data.min))
   }
 
   override value_to_index(value: number, palette_length: number): number {
@@ -57,6 +49,7 @@ export class SymLogColorMapper extends ContinuousColorMapper {
       return palette_length - 1
     }
 
+    // outside of range
     if (scan_data.is_reversed) {
       if (value > scan_data.min) {
         return -1
@@ -71,8 +64,8 @@ export class SymLogColorMapper extends ContinuousColorMapper {
       }
     }
 
-    const log = Math.log(value / scan_data.min)
-    const index = Math.abs(Math.floor(log * scan_data.scale))
+    const float_index = (SymLogScale.symlog(value) - SymLogScale.symlog(scan_data.min)) * scan_data.scale
+    const index = Math.floor(float_index)
     return clamp(index, -1, palette_length)
   }
 }
