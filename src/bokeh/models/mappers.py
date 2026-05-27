@@ -64,6 +64,7 @@ __all__ = (
     'ContinuousColorMapper',
     'LinearColorMapper',
     'LogColorMapper',
+    'SymLogColorMapper',
     'EqHistColorMapper',
     'StackColorMapper',
     'WeightedStackColorMapper',
@@ -288,6 +289,25 @@ class LogColorMapper(ContinuousColorMapper):
     .. warning::
         The ``LogColorMapper`` only works for images with scalar values that are
         non-negative.
+
+    '''
+
+    # explicit __init__ to support Init signatures
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+class SymLogColorMapper(ContinuousColorMapper):
+    ''' Map numbers in a range [*low*, *high*] into a sequence of colors
+    (a palette) on a symmetric logarithm scale.
+
+    For example, if the range is [0, 25] and the palette is
+    ``['red', 'green', 'blue']``, the values would be mapped as follows::
+
+                x < 0     : 'red'     # values < low are clamped
+       0     <= x < 1.72  : 'red'     # math.e ** 1 - 1
+       1.72  <= x < 6.39  : 'green'   # math.e ** 2 - 1
+       6.39  <= x < 19.09 : 'blue'    # math.e ** 3 - 1
+       19.09 <= x         : 'blue'    # values > high are clamped
 
     '''
 
