@@ -5,6 +5,8 @@ import {min, max} from "core/util/arrayable"
 import {clamp} from "core/util/math"
 import type * as p from "core/properties"
 
+// TODO: currently copy of LogColorMapper
+
 export type SymLogScanData = {
   min: number
   max: number
