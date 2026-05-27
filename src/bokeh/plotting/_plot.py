@@ -38,12 +38,12 @@ from ..models import (
     LinearScale,
     LogAxis,
     LogScale,
-    SymLogAxis,
-    SymLogScale,
     MercatorAxis,
     Range,
     Range1d,
     Scale,
+    SymLogAxis,
+    SymLogScale,
     TimedeltaAxis,
 )
 from ..util.dependencies import uses_pandas

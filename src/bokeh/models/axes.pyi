@@ -43,8 +43,8 @@ from .formatters import (
     CategoricalTickFormatter,
     DatetimeTickFormatter,
     LogTickFormatter,
-    SymLogTickFormatter,
     MercatorTickFormatter,
+    SymLogTickFormatter,
     TickFormatter,
     TimedeltaTickFormatter,
 )
@@ -56,8 +56,8 @@ from .tickers import (
     CategoricalTicker,
     DatetimeTicker,
     LogTicker,
-    SymLogTicker,
     MercatorTicker,
+    SymLogTicker,
     Ticker,
     TimedeltaTicker,
 )
