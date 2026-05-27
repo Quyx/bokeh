@@ -86,8 +86,8 @@ from .scales import (
     CategoricalScale,
     LinearScale,
     LogScale,
-    SymLogScale,
     Scale,
+    SymLogScale,
 )
 from .sources import ColumnarDataSource, ColumnDataSource, DataSource
 from .tiles import TileSource, WMTSTileSource

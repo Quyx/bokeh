@@ -58,8 +58,8 @@ from .formatters import (
     BasicTickFormatter,
     CategoricalTickFormatter,
     LogTickFormatter,
-    SymLogTickFormatter,
     MercatorTickFormatter,
+    SymLogTickFormatter,
     TickFormatter,
 )
 from .labeling import AllLabels, LabelingPolicy
@@ -70,8 +70,8 @@ from .tickers import (
     DatetimeTicker,
     FixedTicker,
     LogTicker,
-    SymLogTicker,
     MercatorTicker,
+    SymLogTicker,
     Ticker,
     TimedeltaTicker,
 )
