@@ -40,7 +40,7 @@ export namespace DataRange1d {
   } & Internal
 
   export type Internal = {
-    scale_hint: p.Property<"log" | "auto">
+    scale_hint: p.Property<"log" | "symlog" | "auto">
     _initial_start: p.Property<number | null>
     _initial_end: p.Property<number | null>
     _initial_range_padding: p.Property<number>
@@ -72,7 +72,7 @@ export class DataRange1d extends DataRange {
     }))
 
     this.internal<DataRange1d.Internal, DataRange1d>(({Enum, Float, Nullable}) => ({
-      scale_hint: [ Enum("log", "auto"), "auto" ],
+      scale_hint: [ Enum("log", "symlog", "auto"), "auto" ] as const,
       _initial_start: [ Nullable(Float), (obj) => isNaN(obj.start) ? null : obj.start ],
       _initial_end: [ Nullable(Float), (obj) => isNaN(obj.end) ? null : obj.end ],
       _initial_range_padding: [ Float, (obj) => obj.range_padding ],
