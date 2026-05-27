@@ -61,6 +61,7 @@ __all__ = (
     'DaysTicker',
     'FixedTicker',
     'LogTicker',
+    'SymLogTicker',
     'MercatorTicker',
     'MonthsTicker',
     'SingleIntervalTicker',
@@ -330,6 +331,17 @@ class BasicTicker(AdaptiveTicker):
 
 class LogTicker(AdaptiveTicker):
     ''' Generate ticks on a log scale.
+
+    '''
+
+    # explicit __init__ to support Init signatures
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+    mantissas = Override(default=[1, 5])
+
+class SymLogTicker(AdaptiveTicker):
+    ''' Generate ticks on a symmetric log scale.
 
     '''
 

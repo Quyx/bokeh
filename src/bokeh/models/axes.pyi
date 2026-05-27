@@ -45,6 +45,7 @@ from .formatters import (
     CategoricalTickFormatter,
     DatetimeTickFormatter,
     LogTickFormatter,
+    SymLogTickFormatter,
     MercatorTickFormatter,
     TickFormatter,
     TimedeltaTickFormatter,
@@ -57,6 +58,7 @@ from .tickers import (
     CategoricalTicker,
     DatetimeTicker,
     LogTicker,
+    SymLogTicker,
     MercatorTicker,
     Ticker,
     TimedeltaTicker,
@@ -132,6 +134,16 @@ class LogAxis(ContinuousAxis):
 
     ticker: LogTicker = ...
     formatter: LogTickFormatter = ...
+
+class _SymLogAxisInit(_ContinuousAxisInit, total=False):
+    ticker: SymLogTicker
+    formatter: SymLogTickFormatter
+
+class SymLogAxis(ContinuousAxis):
+    def __init__(self, **kwargs: Unpack[_SymLogAxisInit]) -> None: ...
+
+    ticker: SymLogTicker = ...
+    formatter: SymLogTickFormatter = ...
 
 class _CategoricalAxisInit(_AxisInit, _SeparatorLineInit, _GroupTextInit, _SubgroupTextInit, total=False):
     ticker: CategoricalTicker

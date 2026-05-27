@@ -124,6 +124,12 @@ class _LogTickerInit(_AdaptiveTickerInit, total=False):
 class LogTicker(AdaptiveTicker):
     def __init__(self, **kwargs: Unpack[_LogTickerInit]) -> None: ...
 
+class _SymLogTickerInit(_AdaptiveTickerInit, total=False):
+    ...
+
+class SymLogTicker(AdaptiveTicker):
+    def __init__(self, **kwargs: Unpack[_SymLogTickerInit]) -> None: ...
+
 class _MercatorTickerInit(_BasicTickerInit, total=False):
     dimension: LatLon | None
 
