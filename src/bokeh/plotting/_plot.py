@@ -41,6 +41,8 @@ from ..models import (
     LinearScale,
     LogAxis,
     LogScale,
+    SymLogAxis,
+    SymLogScale,
     MercatorAxis,
     Range,
     Range1d,
@@ -109,7 +111,7 @@ def get_range(range_input: Range | tuple[float, float] | npt.NDArray[Any] | Sequ
 
     raise ValueError(f"Unrecognized range input: '{range_input}'")
 
-type AxisType = Literal["linear", "log", "datetime", "timedelta", "mercator", "auto"]
+type AxisType = Literal["linear", "log", "symlog", "datetime", "timedelta", "mercator", "auto"]
 type AxisLocation = Literal["above", "below", "left", "right"]
 type Dim = Literal[0, 1]
 
@@ -118,6 +120,8 @@ def get_scale(range_input: Range, axis_type: AxisType | None) -> Scale:
         return LinearScale()
     elif isinstance(range_input, (DataRange1d, Range1d)) and axis_type == "log":
         return LogScale()
+    elif isinstance(range_input, (DataRange1d, Range1d)) and axis_type == "symlog":
+        return SymLogScale()
     elif isinstance(range_input, FactorRange):
         return CategoricalScale()
     else:
@@ -154,6 +158,8 @@ def _get_axis_class(axis_type: AxisType | None, range_input: Range, dim: Dim) ->
             return LinearAxis, {}
         case "log":
             return LogAxis, {}
+        case "symlog":
+            return SymLogAxis, {}
         case "datetime":
             return DatetimeAxis, {}
         case "timedelta":
@@ -187,7 +193,7 @@ def _get_num_minor_ticks(axis_class: type[Axis], num_minor_ticks: int | Literal[
     if num_minor_ticks is None:
         return 0
     if num_minor_ticks == 'auto':
-        if axis_class is LogAxis:
+        if axis_class is LogAxis or axis_class is SymLogAxis:
             return 10
         return 5
 
