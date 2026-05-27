@@ -1,6 +1,7 @@
 import {CanvasPanel, CanvasPanelView} from "./canvas_panel"
 import {CategoricalScale} from "../scales/categorical_scale"
 import {LogScale} from "../scales/log_scale"
+import {SymLogScale} from "../scales/symlog_scale"
 import {Scale} from "../scales/scale"
 import {LinearScale} from "../scales/linear_scale"
 import {Range} from "../ranges/range"
@@ -73,6 +74,8 @@ export class CartesianFrameView extends CanvasPanelView {
 
       if (scale instanceof LogScale && range instanceof DataRange1d) {
         range.scale_hint = "log"
+      } else if (scale instanceof SymLogScale && range instanceof DataRange1d) {
+        range.scale_hint = "symlog"
       }
 
       const base_scale = in_scales.get(name) ?? scale
