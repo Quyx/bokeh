@@ -84,7 +84,6 @@ from .scales import (
     CategoricalScale,
     LinearScale,
     LogScale,
-    SymLogScale,
     Scale,
     SymLogScale,
 )
