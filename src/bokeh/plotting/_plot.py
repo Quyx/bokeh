@@ -38,6 +38,8 @@ from ..models import (
     LinearScale,
     LogAxis,
     LogScale,
+    SymLogAxis,
+    SymLogScale,
     MercatorAxis,
     Range,
     Range1d,
