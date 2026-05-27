@@ -101,7 +101,7 @@ type RangeLike = (
     GroupBy[Any]
 )
 
-type AxisType = Auto | Literal["linear", "log", "datetime", "timedelta", "mercator"] | None
+type AxisType = Auto | Literal["linear", "log", "symlog", "datetime", "timedelta", "mercator"] | None
 
 DEFAULT_TOOLS: str
 
