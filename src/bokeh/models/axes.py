@@ -54,6 +54,7 @@ from .formatters import (
     BasicTickFormatter,
     CategoricalTickFormatter,
     LogTickFormatter,
+    SymLogTickFormatter,
     MercatorTickFormatter,
     TickFormatter,
 )
@@ -65,6 +66,7 @@ from .tickers import (
     DatetimeTicker,
     FixedTicker,
     LogTicker,
+    SymLogTicker,
     MercatorTicker,
     Ticker,
     TimedeltaTicker,
@@ -81,6 +83,7 @@ __all__ = (
     'DatetimeAxis',
     'LinearAxis',
     'LogAxis',
+    'SymLogAxis',
     'MercatorAxis',
     'TimedeltaAxis',
 )
@@ -283,6 +286,20 @@ class LogAxis(ContinuousAxis):
     ticker = Override(default=InstanceDefault(LogTicker))
 
     formatter = Override(default=InstanceDefault(LogTickFormatter))
+
+class SymLogAxis(ContinuousAxis):
+    ''' An axis that picks nice numbers for tick locations on a
+    symmetric log scale. Configured with a ``SymLogTickFormatter`` by default.
+
+    '''
+
+    # explicit __init__ to support Init signatures
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+    ticker = Override(default=InstanceDefault(SymLogTicker))
+
+    formatter = Override(default=InstanceDefault(SymLogTickFormatter))
 
 class CategoricalAxis(Axis):
     ''' An axis that displays ticks and labels for categorical ranges.
