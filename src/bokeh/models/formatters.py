@@ -64,6 +64,7 @@ __all__ = (
     "DatetimeTickFormatter",
     "TimedeltaTickFormatter",
     "LogTickFormatter",
+    "SymLogTickFormatter",
     "MercatorTickFormatter",
     "NumeralTickFormatter",
     "PrintfTickFormatter",
@@ -336,6 +337,29 @@ class LogTickFormatter(TickFormatter):
     all ticks in range from base^-min_exponent to base^min_exponent
     are displayed without exponential notation.
     """)
+
+class SymLogTickFormatter(TickFormatter):
+    ''' Display tick values from continuous ranges as powers
+    of some base.
+
+    Most often useful in conjunction with a ``SymLogTicker``.
+
+    '''
+
+    # explicit __init__ to support Init signatures
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+    ticker = Nullable(Instance(Ticker), help="""
+    The corresponding ``SymLogTicker``, used to determine the correct
+    base to use. If unset, the formatter will use base 10 as a default.
+    """)
+
+    # min_exponent = Int(0, help="""
+    # Minimum exponent to format in scientific notation. If not zero
+    # all ticks in range from base^-min_exponent to base^min_exponent
+    # are displayed without exponential notation.
+    # """)
 
 class CategoricalTickFormatter(TickFormatter):
     ''' Display tick values from categorical ranges as string
