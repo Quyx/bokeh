@@ -1,16 +1,16 @@
 import {BaseColorBar, BaseColorBarView} from "./base_color_bar"
 import type {Axis} from "../axes"
-import {CategoricalAxis, LinearAxis, LogAxis} from "../axes"
+import {CategoricalAxis, LinearAxis, LogAxis, SymLogAxis} from "../axes"
 import type {TickFormatter} from "../formatters/tick_formatter"
-import {BasicTickFormatter, LogTickFormatter, CategoricalTickFormatter} from "../formatters"
+import {BasicTickFormatter, LogTickFormatter, SymLogTickFormatter, CategoricalTickFormatter} from "../formatters"
 import {ColorMapper} from "../mappers/color_mapper"
-import {LinearColorMapper, LogColorMapper, ScanningColorMapper, CategoricalColorMapper, ContinuousColorMapper, WeightedStackColorMapper} from "../mappers"
+import {LinearColorMapper, LogColorMapper, ScanningColorMapper, CategoricalColorMapper, ContinuousColorMapper, WeightedStackColorMapper, SymLogColorMapper} from "../mappers"
 import type {Range} from "../ranges"
 import {Range1d, FactorRange} from "../ranges"
 import type {Scale} from "../scales"
 import {LinearScale, LogScale, LinearInterpolationScale, CategoricalScale} from "../scales"
 import type {Ticker} from "../tickers/ticker"
-import {BasicTicker, LogTicker, BinnedTicker, CategoricalTicker} from "../tickers"
+import {BasicTicker, LogTicker, BinnedTicker, CategoricalTicker, SymLogTicker} from "../tickers"
 import type * as p from "core/properties"
 import type {Arrayable} from "core/types"
 import {range, reversed} from "core/util/array"
@@ -62,7 +62,9 @@ export class ColorBarView extends BaseColorBarView {
     if (color_mapper instanceof CategoricalColorMapper) {
       return CategoricalAxis.create()
     } else if (color_mapper instanceof LogColorMapper) {
-      return LogAxis.create()
+      return new LogAxis()
+    } else if (color_mapper instanceof SymLogColorMapper) {
+      return new SymLogAxis()
     } else {
       return LinearAxis.create()
     }
@@ -72,7 +74,9 @@ export class ColorBarView extends BaseColorBarView {
     const {color_mapper} = this
 
     if (this._ticker instanceof LogTicker) {
-      return LogTickFormatter.create()
+      return new LogTickFormatter()
+    } else if (this._ticker instanceof SymLogTicker) {
+      return new SymLogTickFormatter()
     } else if (color_mapper instanceof CategoricalColorMapper) {
       return CategoricalTickFormatter.create()
     } else {
