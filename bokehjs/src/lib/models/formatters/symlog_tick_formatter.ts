@@ -1,7 +1,7 @@
-import { TickFormatter } from "./tick_formatter"
-import { BasicTickFormatter } from "./basic_tick_formatter"
+import {TickFormatter} from "./tick_formatter"
+import {BasicTickFormatter} from "./basic_tick_formatter"
 // import { BasicTickFormatter, unicode_replace } from "./basic_tick_formatter"
-import type { SymLogTicker } from "../tickers/symlog_ticker"
+import type {SymLogTicker} from "../tickers/symlog_ticker"
 // import { to_fixed } from "core/util/string"
 // import type {GraphicsBox} from "core/graphics"
 // import {BaseExpo, TextBox} from "core/graphics"
@@ -9,7 +9,7 @@ import type * as p from "core/properties"
 
 // TODO: currently copy of log_tick_formatter
 
-const { abs, round, log10 } = Math
+const {abs, round, log10} = Math
 
 export namespace SymLogTickFormatter {
   export type Attrs = p.AttrsOf<Props>
@@ -73,7 +73,7 @@ export class SymLogTickFormatter extends TickFormatter {
     return `${sign}${abs_tick.toPrecision(3)}`
   }
 
-  doFormat(ticks: number[], _opts: { loc: number }): string[] {
+  doFormat(ticks: number[], _opts: {loc: number}): string[] {
     if (ticks.length == 0) {
       return []
     }
