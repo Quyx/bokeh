@@ -32,7 +32,7 @@ export class SymLogColorMapper extends ContinuousColorMapper {
     const high = this.high != null ? this.high : max(data)
     const scale = n / (SymLogScale.symlog(high) - SymLogScale.symlog(low))  // subtract the low offset
     const is_reversed = high < low
-    return { max: high, min: low, scale, is_reversed }
+    return {max: high, min: low, scale, is_reversed}
   }
 
   override index_to_value(index: number): number {
