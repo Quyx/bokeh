@@ -9,7 +9,7 @@ import type * as p from "core/properties"
 
 // TODO: currently copy of log_tick_formatter
 
-const {abs, round, log10} = Math
+const {abs, floor, log10} = Math
 
 export namespace SymLogTickFormatter {
   export type Attrs = p.AttrsOf<Props>
@@ -61,16 +61,22 @@ export class SymLogTickFormatter extends TickFormatter {
       return "0"
     }
     const abs_tick = abs(tick)
-    const sign = tick < 0 ? "-" : "+"
+    const sign = tick < 0 ? "-" : ""
     if (abs_tick <= 1) {
       return `${sign}${abs_tick.toPrecision(3)}`//unicode_replace(to_fixed(tick))
     }
-    const exponent = round(log10(abs_tick))
-    const value = 10 ** exponent
-    if (abs(abs_tick - value) / value < 1e-10) { // relatively close
+
+    const exponent = floor(log10(abs_tick))
+    const coefficient = (abs_tick / 10 ** exponent).toPrecision(3)
+    if (exponent == 0) {
+      return `${sign}${coefficient}`
+    }
+    if (coefficient == "1" || coefficient == "1.0") {
       return `${sign}10^${exponent}`
     }
-    return `${sign}${abs_tick.toPrecision(3)}`
+    else {
+      return `${sign}${coefficient}×10^${exponent}`
+    }
   }
 
   doFormat(ticks: number[], _opts: {loc: number}): string[] {
