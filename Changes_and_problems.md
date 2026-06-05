@@ -239,3 +239,19 @@ export class LogTicker extends AdaptiveTicker {
   }
 }
 ```
+
+# Symlog Ticker
+
+The symlog ticker should preferably create ticks at `base**k` and also `-base**k`, where $k \geq 0$ and some linear ticks in (-1, 1).
+The main problem there is figuring out how many ticks to create in the linear interval. For symlog intervals smaller than $2*\log(10)$ (the minimum value to ensure that at least 10^k are in the interval), we just use a linear ticker.
+
+# Major and Minor Ticks
+
+Currently in many cases one minor ticks is on the same spot as a major tick.
+That means when num_minor_ticks is 10, only 9 are drawn. However at times where
+10 intervals are needed, the code falsly requests 10 minor ticks. These two errors equal each other out.
+
+
+--> create one tick less than actually wanted / one on a major tick
+
+- test colors with major and minor tick
