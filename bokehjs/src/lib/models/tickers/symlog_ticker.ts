@@ -71,6 +71,7 @@ export class SymLogTicker extends AdaptiveTicker {
     const num_minor_ticks = this.num_minor_ticks
     let minor_ticks: number[] = []
     let ticks: number[] = []
+    console.log(num_minor_ticks, data_low, data_high)
 
     if (!isFinite(data_low) || !isFinite(data_high) || data_low === data_high) {
       return {major: [], minor: []}
