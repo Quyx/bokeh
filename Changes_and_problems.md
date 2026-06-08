@@ -255,3 +255,11 @@ That means when num_minor_ticks is 10, only 9 are drawn. However at times where
 --> create one tick less than actually wanted / one on a major tick
 
 - test colors with major and minor tick
+
+
+# Vertical inner grid lines
+
+![plot where vertical grid lines end at zero](image.png)
+
+Vertical inner grid lines end at zero sometimes??
+- Happens roughly at 10^31 -> int limit??
