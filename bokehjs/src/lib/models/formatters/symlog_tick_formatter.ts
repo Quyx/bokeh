@@ -5,7 +5,9 @@ import type {GraphicsBox} from "core/graphics"
 import {BaseExpo, TextBox} from "core/graphics"
 import type * as p from "core/properties"
 
-const {abs, log, round} = Math
+// TODO: currently copy of log_tick_formatter
+
+const {abs, floor, log10} = Math
 
 export namespace SymLogTickFormatter {
   export type Attrs = p.AttrsOf<Props>
