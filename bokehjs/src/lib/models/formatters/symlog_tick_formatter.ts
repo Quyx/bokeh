@@ -1,15 +1,13 @@
 import {TickFormatter} from "./tick_formatter"
-import {BasicTickFormatter} from "./basic_tick_formatter"
-// import { BasicTickFormatter, unicode_replace } from "./basic_tick_formatter"
-import type {SymLogTicker} from "../tickers/symlog_ticker"
-// import { to_fixed } from "core/util/string"
-// import type {GraphicsBox} from "core/graphics"
-// import {BaseExpo, TextBox} from "core/graphics"
+import {BasicTickFormatter, unicode_replace} from "./basic_tick_formatter"
+import {SymLogTicker} from "../tickers/symlog_ticker"
+import type {GraphicsBox} from "core/graphics"
+import {BaseExpo, TextBox} from "core/graphics"
 import type * as p from "core/properties"
 
 // TODO: currently copy of log_tick_formatter
 
-const {abs, floor, log10} = Math
+const {abs, log, round} = Math
 
 export namespace SymLogTickFormatter {
   export type Attrs = p.AttrsOf<Props>
@@ -29,63 +27,85 @@ export class SymLogTickFormatter extends TickFormatter {
     super(attrs)
   }
 
-  protected readonly basic_formatter: BasicTickFormatter = new BasicTickFormatter()
-
-  // override format_graphics(ticks: number[], opts: {loc: number}): GraphicsBox[] {
-  //   if (ticks.length == 0) {
-  //     return []
-  //   }
-
-  //   const base = this.ticker?.base ?? 10
-  //   const expos = this._exponents(ticks, base)
-
-  //   if (expos == null) {
-  //     return this.basic_formatter.format_graphics(ticks, opts)
-  //   } else {
-  //     return expos.map((expo) => {
-  //       if (abs(expo) < this.min_exponent) {
-  //         const b = new TextBox({text: unicode_replace(`${base**expo}`)})
-  //         const e = new TextBox({text: ""})
-  //         return new BaseExpo(b, e)
-  //       } else {
-  //         const b = new TextBox({text: unicode_replace(`${base}`)})
-  //         const e = new TextBox({text: unicode_replace(`${expo}`)})
-  //         return new BaseExpo(b, e)
-  //       }
-  //     })
-  //   }
-  // }
-
-  protected _format_tick(tick: number): string {
-    if (tick == 0) {
-      return "0"
-    }
-    const abs_tick = abs(tick)
-    const sign = tick < 0 ? "-" : ""
-    if (abs_tick <= 1) {
-      return `${sign}${abs_tick.toPrecision(3)}`//unicode_replace(to_fixed(tick))
-    }
-
-    const exponent = floor(log10(abs_tick))
-    const coefficient = (abs_tick / 10 ** exponent).toPrecision(3)
-    if (exponent == 0) {
-      return `${sign}${coefficient}`
-    }
-    if (coefficient == "1" || coefficient == "1.0") {
-      return `${sign}10^${exponent}`
-    }
-    else {
-      return `${sign}${coefficient}×10^${exponent}`
-    }
+  static {
+    this.define<SymLogTickFormatter.Props>(({Int, Ref, Nullable}) => ({
+      ticker: [Nullable(Ref(SymLogTicker)), null],
+      min_exponent: [Int, 0],
+    }))
   }
 
-  doFormat(ticks: number[], _opts: {loc: number}): string[] {
+  protected readonly basic_formatter: BasicTickFormatter = new BasicTickFormatter()
+
+  override format_graphics(ticks: number[], opts: {loc: number}): GraphicsBox[] {
     if (ticks.length == 0) {
       return []
     }
 
-    return ticks.map((tick) => {
-      return this._format_tick(tick)
-    })
+    const base = this.ticker?.base ?? 10
+    const expos = this._exponents(ticks, base)
+
+    if (expos == null) {
+      return this.basic_formatter.format_graphics(ticks, opts)
+    } else {
+      return ticks.map((tick) => {
+        const i = ticks.indexOf(tick)
+        const sign = tick < 0 ? "-" : ""
+        const expo = expos[i]
+        if (expo == -1) {
+          return new TextBox({text: "0"})
+        } else if (abs(expo) < this.min_exponent) {
+          const b = new TextBox({text: unicode_replace(`${sign}${base ** expo}`)})
+          const e = new TextBox({text: ""})
+          return new BaseExpo(b, e)
+        } else {
+          const b = new TextBox({text: unicode_replace(`${sign}${base}`)})
+          const e = new TextBox({text: unicode_replace(`${expo}`)})
+          return new BaseExpo(b, e)
+        }
+      })
+    }
+  }
+
+  protected _exponents(ticks: number[], base: number): number[] | null {
+    let last_exponent = null
+    const exponents = []
+    for (const tick of ticks) {
+      let exponent: number;
+      if (tick == 0) {
+        exponent = -1
+      } else {
+        exponent = round(log(abs(tick)) / log(base))
+      }
+      if (last_exponent != exponent) {
+        last_exponent = exponent
+        exponents.push(exponent)
+      } else {
+        return null
+      }
+    }
+    return exponents
+  }
+
+  doFormat(ticks: number[], opts: {loc: number}): string[] {
+    if (ticks.length == 0) {
+      return []
+    }
+    const base = this.ticker?.base ?? 10
+    const expos = this._exponents(ticks, base)
+    if (expos == null) {
+      return this.basic_formatter.doFormat(ticks, opts)
+    } else {
+      return expos.map((expo) => {
+        const i = expos.indexOf(expo)
+        const sign = ticks[i] < 0 ? "-" : ""
+        if (expo == -1) {
+          return "0"
+        } else if (abs(expo) < this.min_exponent) {
+          return unicode_replace(`${sign}${base ** expo}`)
+        } else {
+          return unicode_replace(`${sign}${base}^${expo}`)
+        }
+      })
+    }
   }
 }
