@@ -5,8 +5,6 @@ import type * as p from "core/properties"
 import {SymLogScale} from "models/scales/symlog_scale"
 const {ceil, abs, floor, log, round, sign} = Math
 
-// TODO: better ticks
-
 export namespace SymLogTicker {
   export type Attrs = p.AttrsOf<Props>
 
@@ -20,6 +18,12 @@ export class SymLogTicker extends AdaptiveTicker {
 
   constructor(attrs?: Partial<SymLogTicker.Attrs>) {
     super(attrs)
+  }
+
+  static {
+    this.override<SymLogTicker.Props>({
+      mantissas: [1, 5],
+    })
   }
 
   override get_ticks_no_defaults(data_low: number, data_high: number, _cross_loc: number, desired_n_ticks: number): TickSpec<number> {
@@ -59,7 +63,7 @@ export class SymLogTicker extends AdaptiveTicker {
         }
       }
     } else {
-      // ticks at 10^n and -10^n and zero if in range
+      // ticks at base^n and -base^n and zero if in range
       const start_exp = data_low == 0 ? 0 : floor(sign(data_low) * log(abs(data_low)) / log(base))
       const end_exp = data_high == 0 ? 0 : floor(sign(data_high) * log(abs(data_high)) / log(base))
 
