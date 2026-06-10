@@ -257,8 +257,8 @@ import {radians} from "@bokehjs/core/util/math"
             height: 400,
             x_scale: new LogScale(),
             y_scale: new LogScale(),
-            x_range: new Range1d({start: 10**-2, end: 10**11}),
-            y_range: new Range1d({start: 10**-2, end: 10**11}),
+            x_range: new Range1d({start: 10 ** -2, end: 10 ** 11}),
+            y_range: new Range1d({start: 10 ** -2, end: 10 ** 11}),
             min_border_top: 20,
             min_border_bottom: 20,
             min_border_left: 0,
@@ -314,6 +314,9 @@ import {radians} from "@bokehjs/core/util/math"
     })
   })
 })()
+
+
+
 
 describe("CategoricalAxis", () => {
   type PlotFn = (factors: Factor[], attrs: Partial<CategoricalAxis.Attrs>, options?: {minor_size?: number}) => Promise<void>
