@@ -64,6 +64,7 @@ __all__ = (
     'jitter',
     'linear_cmap',
     'log_cmap',
+    'stack',
     'symlog_cmap',
     'stack',
     'symlog_cmap',
@@ -427,6 +428,24 @@ def log_cmap(
             high_color=high_color,
         ),
     )
+
+def stack(*fields: str) -> Expr:
+    ''' Create a Create a ``DataSpec`` dict to generate a ``Stack`` expression
+    for a ``ColumnDataSource``.
+
+    Examples:
+
+        .. code-block:: python
+
+            p.vbar(bottom=stack("sales", "marketing"), ...
+
+        will generate a ``Stack`` that sums the ``"sales"`` and ``"marketing"``
+        columns of a data source, and use those values as the ``top``
+        coordinate for a ``VBar``.
+
+    '''
+
+    return Expr(Stack(fields=fields))
 
 def symlog_cmap(
     field_name: str,
