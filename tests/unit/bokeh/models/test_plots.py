@@ -42,6 +42,7 @@ from bokeh.models import (
     Plot,
     Range1d,
     ResetTool,
+    SymLogScale,
     Title,
     WMTSTileSource,
     ZoomInTool,
@@ -384,6 +385,10 @@ def test__check_compatible_scale_and_ranges_compat_numeric() -> None:
     assert check == []
 
     plot = Plot(y_scale=LogScale(), y_range=DataRange1d())
+    check = plot._check_compatible_scale_and_ranges()
+    assert check == []
+
+    plot = Plot(y_scale=SymLogScale(), y_range=DataRange1d())
     check = plot._check_compatible_scale_and_ranges()
     assert check == []
 

@@ -36,6 +36,8 @@ from bokeh.models import (
     LogScale,
     MercatorAxis,
     Range1d,
+    SymLogAxis,
+    SymLogScale,
 )
 from bokeh.util.dependencies import is_installed
 
@@ -76,6 +78,10 @@ class test_get_scale_factor_range:
     def test_numeric_range_log_axis() -> None:
         s = bpp.get_scale(DataRange1d(), "log")
         assert isinstance(s, LogScale)
+
+    def test_numeric_range_symlog_axis() -> None:
+        s = bpp.get_scale(DataRange1d(), "symlog")
+        assert isinstance(s, SymLogScale)
 
     def test_factor_range() -> None:
         s = bpp.get_scale(FactorRange(), "auto")
@@ -188,6 +194,11 @@ class Test__get_axis_class:
     def test_axis_type_log(self, range) -> None:
         assert(bpp._get_axis_class("log", range, 0)) == (LogAxis, {})
         assert(bpp._get_axis_class("log", range, 1)) == (LogAxis, {})
+
+    @pytest.mark.parametrize('range', _RANGES)
+    def test_axis_type_symlog(self, range) -> None:
+        assert(bpp._get_axis_class("symlog", range, 0)) == (SymLogAxis, {})
+        assert(bpp._get_axis_class("symlog", range, 1)) == (SymLogAxis, {})
 
     @pytest.mark.parametrize('range', _RANGES)
     def test_axis_type_datetime(self, range) -> None:

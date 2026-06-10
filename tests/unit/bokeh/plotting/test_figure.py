@@ -37,6 +37,7 @@ from bokeh.models import (
     PanTool,
     ResetTool,
     Scatter,
+    SymLogScale,
     Title,
 )
 from bokeh.util.warnings import BokehDeprecationWarning
@@ -162,6 +163,15 @@ class Test_figure:
         p = bpf.figure(y_axis_type='log')
         p.scatter([1, 2, 3], [1, 2, 3])
         assert isinstance(p.y_scale, LogScale)
+
+    def test_symlog_axis(self) -> None:
+        p = bpf.figure(x_axis_type='symlog')
+        p.scatter([1, 2, 3], [1, 2, 3])
+        assert isinstance(p.x_scale, SymLogScale)
+
+        p = bpf.figure(y_axis_type='symlog')
+        p.scatter([1, 2, 3], [1, 2, 3])
+        assert isinstance(p.y_scale, SymLogScale)
 
     def test_grid_tickers(self) -> None:
         p = bpf.figure()
