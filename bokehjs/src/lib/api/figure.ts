@@ -363,11 +363,11 @@ export class Figure extends BaseFigure {
   _pop_visuals(cls: Class<HasProps>, props: Attrs, prefix: string = "",
     defaults: Attrs = {}, override_defaults: Attrs = {}): Attrs {
 
-    const _split_feature_trait = function(ft: string): string[] {
+    const _split_feature_trait = function (ft: string): string[] {
       const fta: string[] = ft.split("_", 2)
       return fta.length == 2 ? fta : fta.concat([""])
     }
-    const _is_visual = function(ft: string): boolean {
+    const _is_visual = function (ft: string): boolean {
       const [feature, trait] = _split_feature_trait(ft)
       return includes(["line", "fill", "hatch", "text", "global"], feature) && trait !== ""
     }
