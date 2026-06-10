@@ -261,5 +261,5 @@ That means when num_minor_ticks is 10, only 9 are drawn. However at times where
 
 ![plot where vertical grid lines end at zero](image.png)
 
-Vertical inner grid lines end at zero sometimes??
-- Happens roughly at 10^31 -> int limit??
+Vertical inner grid lines end at zero sometimes (when using symlog axis)??
+- Happens roughly at 10^31 -> float limit??

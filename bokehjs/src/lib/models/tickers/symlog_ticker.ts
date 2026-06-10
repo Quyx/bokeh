@@ -63,12 +63,8 @@ export class SymLogTicker extends AdaptiveTicker {
       const start_exp = data_low == 0 ? 0 : floor(sign(data_low) * log(abs(data_low)) / log(base))
       const end_exp = data_high == 0 ? 0 : floor(sign(data_high) * log(abs(data_high)) / log(base))
 
-      const negative_ticks = range(start_exp, 1).map(
-        (exp) => -(base ** abs(exp))
-      )
-      const positive_ticks = range(0, end_exp + 1).map(
-        (exp) => (base ** abs(exp))
-      )
+      const negative_ticks = range(start_exp, 1).map((exp) => -(base ** abs(exp)))
+      const positive_ticks = range(0, end_exp + 1).map((exp) => base ** abs(exp))
       ticks = [...negative_ticks, 0, ...positive_ticks]
       ticks = ticks.filter((tick) => data_low <= tick && tick <= data_high)
       const interval = ceil(ticks.length / desired_n_ticks)
@@ -83,7 +79,7 @@ export class SymLogTicker extends AdaptiveTicker {
 
         let low_tick_extra: number // tick below smallest tick
         if (ticks[0] == 0) {
-          low_tick_extra = - (base ** (interval - 1))
+          low_tick_extra = -(base ** (interval - 1))
         } else {
           const low_tick_extra_exponent = round(log(abs(ticks[0])) / log(base) - sign(ticks[0]) * interval)
           if (low_tick_extra_exponent < 0) {
@@ -124,46 +120,6 @@ export class SymLogTicker extends AdaptiveTicker {
         minor_ticks = minor_ticks.filter((tick) => data_low <= tick && tick <= data_high)
       }
     }
-
-    // if (symlog_span < 2 * log(2)) { // symlog_span from -1 to 1 is 2*log(2)
-    //   // linear ticks
-    //   const interval = this.get_interval(data_low, data_high, desired_n_ticks)
-    //   const start = floor(data_low / interval)
-    //   const end = ceil(data_high / interval)
-    //   ticks = range(start, end + 1).map((i) => i * interval)
-    // } else if (data_low > 1 || data_high < -1) {
-    //   // log ticks
-    //   const log_low = log(abs(data_low)) / log(base)
-    //   const log_high = log(abs(data_high)) / log(base)
-    //   const base_tick_options = range(ceil(log_low) - 1, floor(log_high) + 1, 1).map((i) => sign(data_low) * (base ** i))
-    //   const tick_options = base_tick_options.filter((tick) => data_low <= tick && tick <= data_high)
-    //   const filter_interval = Math.max(1, round(tick_options.length / desired_n_ticks))
-    //   ticks = tick_options.filter((_, i) => i % filter_interval === 0)
-    // } else if (data_low < -1 && data_high > 1) {
-    //   // log ticks from low to -1 and from 1 to high, linear ticks from -1 to 1
-    //   const log_low = log(-data_low) / log(base)
-    //   const log_high = log(data_high) / log(base)
-    //   const negative_ticks = range(ceil(log_low), 0).map((i) => -(base ** i))
-    //   const positive_ticks = range(0, floor(log_high) + 1).map((i) => base ** i)
-    //   const linear_ticks_interval = this.get_interval(-1, 1, round(desired_n_ticks * 2 * log(2) / symlog_span))
-    //   const linear_ticks = range(ceil(-1 / linear_ticks_interval), floor(1 / linear_ticks_interval) + 1).map((i) => i * linear_ticks_interval)
-
-    //   ticks = [...negative_ticks, ...linear_ticks, ...positive_ticks].filter((tick) => data_low <= tick && tick <= data_high)
-    //   const filter_interval = Math.max(1, round(ticks.length / desired_n_ticks))
-    //   ticks = ticks.filter((_, i) => i % filter_interval === 0)
-    // } else {
-    //   const step = symlog_span / Math.max(1, desired_n_ticks)
-    //   const t_start = floor(symlog_low / step) * step
-    //   const t_end = ceil(symlog_high / step) * step
-
-    //   const t_ticks = range(0, ceil((t_end - t_start) / step) + 1).map((i) => t_start + i * step)
-    //   ticks = t_ticks.map((t) => SymLogScale.inverse_symlog(t))
-    //   if (data_low <= 0 && data_high >= 0) {
-    //     ticks.push(0)
-    //   }
-    // }
-
-
 
     return {
       major: ticks
