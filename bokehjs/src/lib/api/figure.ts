@@ -35,6 +35,8 @@ import {
   MercatorAxis,
   Range,
   Range1d,
+  SymLogAxis,
+  SymLogScale,
   TimedeltaAxis,
   Tool,
   ToolProxy,
@@ -59,7 +61,7 @@ const _default_color = "#1f77b4"
 
 const _default_alpha = 1.0
 
-export type AxisType = "auto" | "linear" | "datetime" | "timedelta" | "log" | "mercator" | null
+export type AxisType = "auto" | "linear" | "datetime" | "timedelta" | "log" | "mercator" | "symlog" | null
 export type AxisLocation = Location | null
 
 export namespace Figure {
@@ -158,7 +160,7 @@ export class SubFigure extends GlyphAPI {
   }
 }
 
-export interface Figure extends GlyphAPI {}
+export interface Figure extends GlyphAPI { }
 export class Figure extends BaseFigure {
 
   get xaxes(): Axis[] {
@@ -232,7 +234,7 @@ export class Figure extends BaseFigure {
     delete attrs.y_minor_ticks
 
     const x_axis_location = attrs.x_axis_location === undefined ? "below" : attrs.x_axis_location
-    const y_axis_location = attrs.y_axis_location === undefined ? "left"  : attrs.y_axis_location
+    const y_axis_location = attrs.y_axis_location === undefined ? "left" : attrs.y_axis_location
     delete attrs.x_axis_location
     delete attrs.y_axis_location
 
@@ -359,13 +361,13 @@ export class Figure extends BaseFigure {
   }
 
   _pop_visuals(cls: Class<HasProps>, props: Attrs, prefix: string = "",
-      defaults: Attrs = {}, override_defaults: Attrs = {}): Attrs {
+    defaults: Attrs = {}, override_defaults: Attrs = {}): Attrs {
 
-    const _split_feature_trait = function(ft: string): string[] {
+    const _split_feature_trait = function (ft: string): string[] {
       const fta: string[] = ft.split("_", 2)
       return fta.length == 2 ? fta : fta.concat([""])
     }
-    const _is_visual = function(ft: string): boolean {
+    const _is_visual = function (ft: string): boolean {
       const [feature, trait] = _split_feature_trait(ft)
       return includes(["line", "fill", "hatch", "text", "global"], feature) && trait !== ""
     }
@@ -568,14 +570,14 @@ export class Figure extends BaseFigure {
     const coordinates = attrs.coordinates
     delete attrs.coordinates
 
-    const glyph_ca  = this._pop_visuals(cls, attrs)
+    const glyph_ca = this._pop_visuals(cls, attrs)
     const nglyph_ca = this._pop_visuals(cls, attrs, "nonselection_", glyph_ca, {alpha: 0.1})
     const sglyph_ca = this._pop_visuals(cls, attrs, "selection_", glyph_ca)
     const hglyph_ca = this._pop_visuals(cls, attrs, "hover_", glyph_ca)
     const mglyph_ca = this._pop_visuals(cls, attrs, "muted_", glyph_ca, {alpha: 0.2})
 
     const data_dict = dict(data)
-    this._fixup_values(cls, data_dict,  glyph_ca)
+    this._fixup_values(cls, data_dict, glyph_ca)
     this._fixup_values(cls, data_dict, nglyph_ca)
     this._fixup_values(cls, data_dict, sglyph_ca)
     this._fixup_values(cls, data_dict, hglyph_ca)
@@ -589,20 +591,20 @@ export class Figure extends BaseFigure {
       return new cls({...attrs, ...extra_attrs})
     }
 
-    const glyph  = _make_glyph(cls, attrs, glyph_ca)
+    const glyph = _make_glyph(cls, attrs, glyph_ca)
     const nglyph = !is_empty(nglyph_ca) ? _make_glyph(cls, attrs, nglyph_ca) : "auto"
     const sglyph = !is_empty(sglyph_ca) ? _make_glyph(cls, attrs, sglyph_ca) : "auto"
     const hglyph = !is_empty(hglyph_ca) ? _make_glyph(cls, attrs, hglyph_ca) : undefined
     const mglyph = !is_empty(mglyph_ca) ? _make_glyph(cls, attrs, mglyph_ca) : "auto"
 
     const glyph_renderer = new GlyphRenderer({
-      data_source:        source,
+      data_source: source,
       view,
       glyph,
       nonselection_glyph: nglyph,
-      selection_glyph:    sglyph,
-      hover_glyph:        hglyph,
-      muted_glyph:        mglyph,
+      selection_glyph: sglyph,
+      hover_glyph: hglyph,
+      muted_glyph: mglyph,
       name,
       level,
       visible,
@@ -646,7 +648,7 @@ export class Figure extends BaseFigure {
 
   static _get_scale(range_input: Range, axis_type: AxisType): Scale {
     if (range_input instanceof DataRange1d ||
-        range_input instanceof Range1d) {
+      range_input instanceof Range1d) {
       switch (axis_type) {
         case null:
         case "auto":
@@ -657,6 +659,8 @@ export class Figure extends BaseFigure {
           return new LinearScale()
         case "log":
           return new LogScale()
+        case "symlog":
+          return new SymLogScale()
       }
     }
 
@@ -668,7 +672,7 @@ export class Figure extends BaseFigure {
   }
 
   _process_axis_and_grid(axis_type: AxisType, axis_location: AxisLocation, minor_ticks: number | "auto" | undefined,
-      axis_label: Axis["axis_label"], rng: Range, dim: 0 | 1): void {
+    axis_label: Axis["axis_label"], rng: Range, dim: 0 | 1): void {
     const axis = this._get_axis(axis_type, rng, dim)
     if (axis != null) {
       if (axis instanceof LogAxis) {
@@ -676,6 +680,12 @@ export class Figure extends BaseFigure {
           this.x_scale = new LogScale()
         } else {
           this.y_scale = new LogScale()
+        }
+      } else if (axis instanceof SymLogAxis) {
+        if (dim == 0) {
+          this.x_scale = new SymLogScale()
+        } else {
+          this.y_scale = new SymLogScale()
         }
       }
 
@@ -701,6 +711,8 @@ export class Figure extends BaseFigure {
         return new LinearAxis()
       case "log":
         return new LogAxis()
+      case "symlog":
+        return new SymLogAxis()
       case "datetime":
         return new DatetimeAxis()
       case "timedelta":
@@ -733,7 +745,7 @@ export class Figure extends BaseFigure {
     } else if (num_minor_ticks == null) {
       return 0
     } else {
-      return axis instanceof LogAxis ? 10 : 5
+      return axis instanceof LogAxis || axis instanceof SymLogAxis ? 10 : 5
     }
   }
 
