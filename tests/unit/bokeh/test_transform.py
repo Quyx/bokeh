@@ -30,6 +30,7 @@ from bokeh.models import (
     LinearColorMapper,
     LogColorMapper,
     Stack,
+    SymLogColorMapper,
 )
 from tests.support.util.api import verify_all
 
@@ -51,6 +52,7 @@ ALL = (
     'linear_cmap',
     'log_cmap',
     'stack',
+    'symlog_cmap',
     'transform',
 )
 
@@ -283,6 +285,32 @@ class Test_stack:
         assert isinstance(val, Expr)
         assert isinstance(val.expr, Stack)
         assert val.expr.fields == ('foo', 'baz')
+
+
+class Test_symlog_cmap:
+    def test_basic(self) -> None:
+        t = bt.symlog_cmap("foo", ["red", "green"], -10, 10, low_color="orange", high_color="blue", nan_color="pink")
+        assert isinstance(t, Field)
+        assert t.field == "foo"
+        assert isinstance(t.transform, SymLogColorMapper)
+        assert t.transform.palette == ["red", "green"]
+        assert t.transform.low == -10
+        assert t.transform.high == 10
+        assert t.transform.low_color == "orange"
+        assert t.transform.high_color == "blue"
+        assert t.transform.nan_color == "pink"
+
+    def test_defaults(self) -> None:
+        t = bt.symlog_cmap("foo", ["red", "green"], -10, 10)
+        assert isinstance(t, Field)
+        assert t.field == "foo"
+        assert isinstance(t.transform, SymLogColorMapper)
+        assert t.transform.palette == ["red", "green"]
+        assert t.transform.low == -10
+        assert t.transform.high == 10
+        assert t.transform.low_color is None
+        assert t.transform.high_color is None
+        assert t.transform.nan_color == "gray"
 
 
 class Test_transform:

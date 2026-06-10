@@ -64,8 +64,8 @@ __all__ = (
     'jitter',
     'linear_cmap',
     'log_cmap',
-    'symlog_cmap',
     'stack',
+    'symlog_cmap',
     'transform',
 )
 
@@ -427,6 +427,24 @@ def log_cmap(
         ),
     )
 
+def stack(*fields: str) -> Expr:
+    ''' Create a Create a ``DataSpec`` dict to generate a ``Stack`` expression
+    for a ``ColumnDataSource``.
+
+    Examples:
+
+        .. code-block:: python
+
+            p.vbar(bottom=stack("sales", "marketing"), ...
+
+        will generate a ``Stack`` that sums the ``"sales"`` and ``"marketing"``
+        columns of a data source, and use those values as the ``top``
+        coordinate for a ``VBar``.
+
+    '''
+
+    return Expr(Stack(fields=fields))
+
 def symlog_cmap(
     field_name: str,
     palette: Sequence[ColorLike],
@@ -473,24 +491,6 @@ def symlog_cmap(
             high_color=high_color,
         ),
     )
-
-def stack(*fields: str) -> Expr:
-    ''' Create a Create a ``DataSpec`` dict to generate a ``Stack`` expression
-    for a ``ColumnDataSource``.
-
-    Examples:
-
-        .. code-block:: python
-
-            p.vbar(bottom=stack("sales", "marketing"), ...
-
-        will generate a ``Stack`` that sums the ``"sales"`` and ``"marketing"``
-        columns of a data source, and use those values as the ``top``
-        coordinate for a ``VBar``.
-
-    '''
-
-    return Expr(Stack(fields=fields))
 
 def transform(field_name: str, transform: Transform) -> Field:
     ''' Create a ``DataSpec`` dict that applies an arbitrary client-side
