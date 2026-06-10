@@ -5,8 +5,6 @@ import type {GraphicsBox} from "core/graphics"
 import {BaseExpo, TextBox} from "core/graphics"
 import type * as p from "core/properties"
 
-// TODO: currently copy of log_tick_formatter
-
 const {abs, log, round} = Math
 
 export namespace SymLogTickFormatter {
@@ -30,7 +28,7 @@ export class SymLogTickFormatter extends TickFormatter {
   static {
     this.define<SymLogTickFormatter.Props>(({Int, Ref, Nullable}) => ({
       ticker: [Nullable(Ref(SymLogTicker)), null],
-      min_exponent: [Int, 0],
+      min_exponent: [Int, 1],
     }))
   }
 
