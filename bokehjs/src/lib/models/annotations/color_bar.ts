@@ -8,7 +8,7 @@ import {LinearColorMapper, LogColorMapper, ScanningColorMapper, CategoricalColor
 import type {Range} from "../ranges"
 import {Range1d, FactorRange} from "../ranges"
 import type {Scale} from "../scales"
-import {LinearScale, LogScale, LinearInterpolationScale, CategoricalScale} from "../scales"
+import {LinearScale, LogScale, LinearInterpolationScale, CategoricalScale, SymLogScale} from "../scales"
 import type {Ticker} from "../tickers/ticker"
 import {BasicTicker, LogTicker, BinnedTicker, CategoricalTicker, SymLogTicker} from "../tickers"
 import type * as p from "core/properties"
@@ -62,9 +62,7 @@ export class ColorBarView extends BaseColorBarView {
     if (color_mapper instanceof CategoricalColorMapper) {
       return CategoricalAxis.create()
     } else if (color_mapper instanceof LogColorMapper) {
-      return new LogAxis()
-    } else if (color_mapper instanceof SymLogColorMapper) {
-      return new SymLogAxis()
+      return LogAxis.create()
     } else {
       return LinearAxis.create()
     }
@@ -74,9 +72,7 @@ export class ColorBarView extends BaseColorBarView {
     const {color_mapper} = this
 
     if (this._ticker instanceof LogTicker) {
-      return new LogTickFormatter()
-    } else if (this._ticker instanceof SymLogTicker) {
-      return new SymLogTickFormatter()
+      return LogTickFormatter.create()
     } else if (color_mapper instanceof CategoricalColorMapper) {
       return CategoricalTickFormatter.create()
     } else {
@@ -113,6 +109,8 @@ export class ColorBarView extends BaseColorBarView {
       return LinearScale.create()
     } else if (color_mapper instanceof LogColorMapper) {
       return LogScale.create()
+    } else if (color_mapper instanceof SymLogColorMapper) {
+      return SymLogScale.create()
     } else if (color_mapper instanceof ScanningColorMapper) {
       return LinearInterpolationScale.create({binning: this._scanning_binning(color_mapper)})
     } else if (color_mapper instanceof CategoricalColorMapper) {
@@ -127,6 +125,8 @@ export class ColorBarView extends BaseColorBarView {
 
     if (color_mapper instanceof LogColorMapper) {
       return LogTicker.create()
+    } else if (color_mapper instanceof SymLogColorMapper) {
+      return SymLogTicker.create()
     } else if (color_mapper instanceof ScanningColorMapper) {
       return BinnedTicker.create({mapper: color_mapper})
     } else if (color_mapper instanceof CategoricalColorMapper) {
@@ -153,9 +153,9 @@ export class ColorBarView extends BaseColorBarView {
     if (display_high != null) {
       const palette_length = color_mapper.palette.length
       const index_high = color_mapper.value_to_index(display_high, palette_length)
-      if (index_high < palette_length-1) {
+      if (index_high < palette_length - 1) {
         this._index_high = index_high
-        max = color_mapper.index_to_value(index_high+1)
+        max = color_mapper.index_to_value(index_high + 1)
       }
     }
 
@@ -195,7 +195,7 @@ export class ColorBarView extends BaseColorBarView {
         const frame_range = vertical ? this._frame_view.y_range : this._frame_view.x_range
         if (frame_range instanceof Range1d) {
           frame_range.start = binning[0]
-          frame_range.end = binning[binning.length-1]
+          frame_range.end = binning[binning.length - 1]
         }
       }
     } else if (color_mapper instanceof ContinuousColorMapper && range instanceof Range1d) {
@@ -245,7 +245,7 @@ export class ColorBarView extends BaseColorBarView {
     this._index_high = null
     if (display_high != null) {
       const index_high = color_mapper.value_to_index(display_high, binning.length)
-      if (index_high < binning.length-1) {
+      if (index_high < binning.length - 1) {
         this._index_high = index_high
       }
     }
@@ -343,10 +343,10 @@ export class ColorBar extends BaseColorBar {
     this.prototype.default_view = ColorBarView
 
     this.define<ColorBar.Props>(({Alpha, Nullable, Float, Ref}) => ({
-      color_mapper: [ Ref(ColorMapper) ],
-      display_low:  [ Nullable(Float), null ],
-      display_high: [ Nullable(Float), null ],
-      scale_alpha:  [ Alpha, 1.0 ],
+      color_mapper: [Ref(ColorMapper)],
+      display_low: [Nullable(Float), null],
+      display_high: [Nullable(Float), null],
+      scale_alpha: [Alpha, 1.0],
     }))
   }
 }
