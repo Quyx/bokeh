@@ -2128,6 +2128,24 @@
       },
     },
   },
+  SymLogAxis: {
+    __extends__: "ContinuousAxis",
+    ticker: {
+      type: "object",
+      name: "SymLogTicker",
+      attributes: {
+        mantissas: [
+          1,
+          5,
+        ],
+      },
+    },
+    formatter: {
+      type: "object",
+      name: "SymLogTickFormatter",
+      attributes: {},
+    },
+  },
   TimedeltaAxis: {
     __extends__: "LinearAxis",
     ticker: {
@@ -2949,6 +2967,11 @@
   PrintfTickFormatter: {
     __extends__: "TickFormatter",
     format: "%s",
+  },
+  SymLogTickFormatter: {
+    __extends__: "TickFormatter",
+    ticker: null,
+    min_exponent: 1,
   },
   SITickFormatter: {
     __extends__: "TickFormatter",
@@ -5660,6 +5683,9 @@
   StackColorMapper: {
     __extends__: "ColorMapper",
   },
+  SymLogColorMapper: {
+    __extends__: "ContinuousColorMapper",
+  },
   WeightedStackColorMapper: {
     __extends__: "StackColorMapper",
     alpha_mapper: {
@@ -6142,6 +6168,9 @@
   Scale: {
     __extends__: "Transform",
   },
+  SymLogScale: {
+    __extends__: "ContinuousScale",
+  },
   IntersectRenderers: {
     __extends__: "SelectionPolicy",
   },
@@ -6577,6 +6606,13 @@
       type: "symbol",
       name: "unset",
     },
+  },
+  SymLogTicker: {
+    __extends__: "AdaptiveTicker",
+    mantissas: [
+      1,
+      5,
+    ],
   },
   Ticker: {
     __extends__: "Model",
