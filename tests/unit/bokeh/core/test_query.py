@@ -35,6 +35,7 @@ from bokeh.models import (
     ResetTool,
     SaveTool,
     Scatter,
+    SymLogAxis,
     Tool,
     WheelZoomTool,
 )
@@ -52,10 +53,11 @@ typcases = {
     Plot: 1,
     Glyph: 3,
 
-    Axis: 3,
+    Axis: 4,
     DatetimeAxis: 1,
     LinearAxis: 2,  # DatetimeAxis is subclass of LinearAxis
     LogAxis: 1,
+    SymLogAxis: 1,
 
     Grid: 2,
 
@@ -103,6 +105,7 @@ def large_plot():
     plot.add_layout(DatetimeAxis(), 'below')
     plot.add_layout(LogAxis(), 'left')
     plot.add_layout(LinearAxis(y_range_name="liny"), 'left')
+    plot.add_layout(SymLogAxis(), 'right')
 
     plot.add_layout(Grid(dimension=0), 'left')
     plot.add_layout(Grid(dimension=1), 'left')
@@ -194,32 +197,32 @@ def test_in() -> None:
 
     # count adjusted by hand to account for duplicates/subclasses
     res = list(q.find(plot.references(), dict(type={q.IN: list(typcases.keys())})))
-    assert len(res) == 17
+    assert len(res) == 18
 
 def test_disjuction() -> None:
     res = list(
         q.find(plot.references(),
         {q.OR: [dict(type=Axis), dict(type=Grid)]}),
     )
-    assert len(res) == 5
+    assert len(res) == 6
 
     res = list(
         q.find(plot.references(),
         {q.OR: [dict(type=Axis), dict(name="myscatter")]}),
     )
-    assert len(res) == 4
+    assert len(res) == 5
 
     res = list(
         q.find(plot.references(),
         {q.OR: [dict(type=Axis), dict(tags="foo"), dict(name="myscatter")]}),
     )
-    assert len(res) == 6
+    assert len(res) == 7
 
     res = list(
         q.find(plot.references(),
         {q.OR: [dict(type=Axis), dict(tags="foo"), dict(name="myscatter"), dict(name="bad")]}),
     )
-    assert len(res) == 6
+    assert len(res) == 7
 
 def test_conjunction() -> None:
     res = list(
