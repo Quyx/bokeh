@@ -15,6 +15,8 @@ import {
   PanTool,
   Plot,
   Range1d,
+  SymLogAxis,
+  SymLogScale,
   TeX,
   Toolbar,
   ToolbarPanel,
@@ -28,14 +30,14 @@ import {radians} from "@bokehjs/core/util/math"
 (() => {
   type PlotFn = (attrs: Partial<Axis.Attrs>, options?: {minor_size?: number, num_ticks?: number}) => Promise<void>
 
-  function hplot(side: Side, axis_type: "linear" | "log"): PlotFn {
+  function hplot(side: Side, axis_type: "linear" | "log" | "symlog"): PlotFn {
     return async (attrs, options) => {
       const p = new Plot({
         width: 300,
         height: options?.minor_size ?? 50,
-        x_scale: axis_type == "linear" ? new LinearScale() : new LogScale(),
+        x_scale: axis_type == "linear" ? new LinearScale() : (axis_type == "log" ? new LogScale() : new SymLogScale()),
         y_scale: new LinearScale(),
-        x_range: axis_type == "linear" ? new Range1d({start: 100, end: 200}) : new Range1d({start: 10**-2, end: 10**11}),
+        x_range: axis_type == "linear" ? new Range1d({start: 100, end: 200}) : (axis_type == "log" ? new Range1d({start: 10 ** -2, end: 10 ** 11}) : new Range1d({start: -(10 ** 3), end: 10 ** 3})),
         y_range: new Range1d({start: 0, end: 1}),
         min_border_top: 0,
         min_border_bottom: 0,
@@ -45,7 +47,7 @@ import {radians} from "@bokehjs/core/util/math"
         toolbar_location: null,
       })
 
-      const axis = axis_type == "linear" ? new LinearAxis(attrs) : new LogAxis(attrs)
+      const axis = axis_type == "linear" ? new LinearAxis(attrs) : (axis_type == "log" ? new LogAxis(attrs) : new SymLogAxis(attrs))
       if (options?.num_ticks != null) {
         axis.ticker.desired_num_ticks = options.num_ticks
       }
@@ -55,15 +57,15 @@ import {radians} from "@bokehjs/core/util/math"
     }
   }
 
-  function vplot(side: Side, axis_type: "linear" | "log"): PlotFn {
+  function vplot(side: Side, axis_type: "linear" | "log" | "symlog"): PlotFn {
     return async (attrs, options) => {
       const p = new Plot({
         width: options?.minor_size ?? 50,
         height: 300,
         x_scale: new LinearScale(),
-        y_scale: axis_type == "linear" ? new LinearScale() : new LogScale(),
+        y_scale: axis_type == "linear" ? new LinearScale() : (axis_type == "log" ? new LogScale() : new SymLogScale()),
         x_range: new Range1d({start: 0, end: 1}),
-        y_range: axis_type == "linear" ? new Range1d({start: 100, end: 200}) : new Range1d({start: 10**-2, end: 10**11}),
+        y_range: axis_type == "linear" ? new Range1d({start: 100, end: 200}) : (axis_type == "log" ? new Range1d({start: 10 ** -2, end: 10 ** 11}) : new Range1d({start: -(10 ** 3), end: 10 ** 3})),
         min_border_top: 20,
         min_border_bottom: 20,
         min_border_left: 0,
@@ -72,7 +74,7 @@ import {radians} from "@bokehjs/core/util/math"
         toolbar_location: null,
       })
 
-      const axis = axis_type == "linear" ? new LinearAxis(attrs) : new LogAxis(attrs)
+      const axis = axis_type == "linear" ? new LinearAxis(attrs) : (axis_type == "log" ? new LogAxis(attrs) : new SymLogAxis(attrs))
       if (options?.num_ticks != null) {
         axis.ticker.desired_num_ticks = options.num_ticks
       }
@@ -217,6 +219,34 @@ import {radians} from "@bokehjs/core/util/math"
       describe("right of a plot", () => test(vplot("right", "linear")))
     })
 
+    describe("with fixed location", () => {
+      it("should be added without effecting the position of the toolbar", async () => {
+        const tools = [new PanTool(), new WheelZoomTool()]
+        const p = fig([300, 300], {toolbar_location: "right"})
+        p.scatter([1, 2, 3], [1, 2, 3])
+        p.extra_x_ranges = {["x"]: new Range1d({start: 0.9, end: 3.1})}
+        p.extra_y_ranges = {["y"]: new Range1d({start: 0.9, end: 3.1})}
+        p.add_layout(new LinearAxis({x_range_name: "x", fixed_location: 1.5}), "below")
+        p.add_layout(new LinearAxis({y_range_name: "y", fixed_location: 2.5}), "right")
+        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "above"})}), "above")
+        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "left"})}), "left")
+        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "below"})}), "below")
+        await display(p)
+      })
+    })
+  })
+
+  describe("LogAxis", () => {
+    describe("in horizontal orientation", () => {
+      describe("above a plot", () => test(hplot("above", "log")))
+      describe("below a plot", () => test(hplot("below", "log")))
+    })
+
+    describe("in vertical orientation", () => {
+      describe("left of a plot", () => test(vplot("left", "log")))
+      describe("right of a plot", () => test(vplot("right", "log")))
+    })
+
     describe("in both orientations", () => {
       async function hvplot(attrs: Partial<LogAxis.Attrs>): Promise<void> {
         function make_plot(output_backend: OutputBackend) {
@@ -227,8 +257,8 @@ import {radians} from "@bokehjs/core/util/math"
             height: 400,
             x_scale: new LogScale(),
             y_scale: new LogScale(),
-            x_range: new Range1d({start: 10**-2, end: 10**11}),
-            y_range: new Range1d({start: 10**-2, end: 10**11}),
+            x_range: new Range1d({start: 10 ** -2, end: 10 ** 11}),
+            y_range: new Range1d({start: 10 ** -2, end: 10 ** 11}),
             min_border_top: 20,
             min_border_bottom: 20,
             min_border_left: 0,
@@ -270,36 +300,23 @@ import {radians} from "@bokehjs/core/util/math"
         })
       })
     })
-
-    describe("with fixed location", () => {
-      it("should be added without effecting the position of the toolbar", async () => {
-        const tools = [new PanTool(), new WheelZoomTool()]
-        const p = fig([300, 300], {toolbar_location: "right"})
-        p.scatter([1, 2, 3], [1, 2, 3])
-        p.extra_x_ranges = {["x"]: new Range1d({start: 0.9, end: 3.1})}
-        p.extra_y_ranges = {["y"]: new Range1d({start: 0.9, end: 3.1})}
-        p.add_layout(new LinearAxis({x_range_name: "x", fixed_location: 1.5}), "below")
-        p.add_layout(new LinearAxis({y_range_name: "y", fixed_location: 2.5}), "right")
-        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "above"})}), "above")
-        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "left"})}), "left")
-        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "below"})}), "below")
-        await display(p)
-      })
-    })
   })
 
-  describe("LogAxis", () => {
+  describe("SymLogAxis", () => {
     describe("in horizontal orientation", () => {
-      describe("above a plot", () => test(hplot("above", "log")))
-      describe("below a plot", () => test(hplot("below", "log")))
+      describe("above a plot", () => test(hplot("above", "symlog")))
+      describe("below a plot", () => test(hplot("below", "symlog")))
     })
 
     describe("in vertical orientation", () => {
-      describe("left of a plot", () => test(vplot("left", "log")))
-      describe("right of a plot", () => test(vplot("right", "log")))
+      describe("left of a plot", () => test(vplot("left", "symlog")))
+      describe("right of a plot", () => test(vplot("right", "symlog")))
     })
   })
 })()
+
+
+
 
 describe("CategoricalAxis", () => {
   type PlotFn = (factors: Factor[], attrs: Partial<CategoricalAxis.Attrs>, options?: {minor_size?: number}) => Promise<void>
