@@ -3,7 +3,7 @@ import {expect} from "#framework/assertions"
 
 import type {Plot, Column, ColorMapper} from "@bokehjs/models"
 import {
-  ColorBar, LinearAxis, LinearColorMapper, LogColorMapper, EqHistColorMapper, CategoricalColorMapper,
+  ColorBar, LinearAxis, LinearColorMapper, LogColorMapper, SymLogColorMapper, EqHistColorMapper, CategoricalColorMapper,
 } from "@bokehjs/models"
 
 import {Random} from "@bokehjs/core/util/random"
@@ -486,9 +486,32 @@ describe("ColorBar annotation", () => {
     const y = random.floats(n, 0, 5)
     const r = random.floats(n, 0.1, 0.5)
     const v = [
-      ...random.floats(n/3, 7, 13),
-      ...random.floats(n/3, 70, 130),
-      ...random.floats(n/3, 700, 1300),
+      ...random.floats(n / 3, 7, 13),
+      ...random.floats(n / 3, 70, 130),
+      ...random.floats(n / 3, 700, 1300),
+    ]
+
+    const p = fig([500, 200], {border_fill_color: "lightgray"})
+    p.circle({x, y, radius: r, fill_color: {field: "values", transform: color_mapper}, source: {values: v}})
+    p.add_layout(color_bar, "below")
+
+    await display(p)
+  })
+
+  it("should support SymLogColorMapper", async () => {
+    const random = new Random(1)
+
+    const color_mapper = new SymLogColorMapper({palette: Spectral11})
+    const color_bar = new ColorBar({color_mapper, title: "Unspecified title", border_line_color: "black"})
+
+    const n = 30
+    const x = random.floats(n, 0, 10)
+    const y = random.floats(n, 0, 5)
+    const r = random.floats(n, 0.1, 0.5)
+    const v = [
+      ...random.floats(n / 3, -3, 3),
+      ...random.floats(n / 3, -30, 30),
+      ...random.floats(n / 3, -300, 300),
     ]
 
     const p = fig([500, 200], {border_fill_color: "lightgray"})
@@ -509,9 +532,9 @@ describe("ColorBar annotation", () => {
     const y = random.floats(n, 0, 5)
     const r = random.floats(n, 0.1, 0.5)
     const v = [
-      ...random.floats(n/3, 7, 13),
-      ...random.floats(n/3, 70, 130),
-      ...random.floats(n/3, 700, 1300),
+      ...random.floats(n / 3, 7, 13),
+      ...random.floats(n / 3, 70, 130),
+      ...random.floats(n / 3, 700, 1300),
     ]
 
     const p = fig([500, 200], {border_fill_color: "lightgray"})
@@ -558,9 +581,10 @@ describe("ColorBar annotation", () => {
       const palette = Spectral11
       const p0 = make_plot(new LinearColorMapper({palette}), "linear", display_low, display_high)
       const p1 = make_plot(new LogColorMapper({palette}), "log", display_low, display_high)
-      const p2 = make_plot(new EqHistColorMapper({palette, rescale_discrete_levels: false}), "eq hist", display_low, display_high)
-      const p3 = make_plot(new EqHistColorMapper({palette, rescale_discrete_levels: true}), "eq hist rescaled", display_low, display_high)
-      return column([p0, p1, p2, p3])
+      const p2 = make_plot(new SymLogColorMapper({palette}), "symlog", display_low, display_high)
+      const p3 = make_plot(new EqHistColorMapper({palette, rescale_discrete_levels: false}), "eq hist", display_low, display_high)
+      const p4 = make_plot(new EqHistColorMapper({palette, rescale_discrete_levels: true}), "eq hist rescaled", display_low, display_high)
+      return column([p0, p1, p2, p3, p4])
     }
 
     it("low only", async () => {
