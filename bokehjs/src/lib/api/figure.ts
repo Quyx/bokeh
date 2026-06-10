@@ -160,7 +160,7 @@ export class SubFigure extends GlyphAPI {
   }
 }
 
-export interface Figure extends GlyphAPI {}
+export interface Figure extends GlyphAPI { }
 export class Figure extends BaseFigure {
   private readonly _figure_options: {
     x_axis_type: AxisType
@@ -265,7 +265,7 @@ export class Figure extends BaseFigure {
     delete attrs.y_minor_ticks
 
     const x_axis_location = attrs.x_axis_location === undefined ? "below" : attrs.x_axis_location
-    const y_axis_location = attrs.y_axis_location === undefined ? "left"  : attrs.y_axis_location
+    const y_axis_location = attrs.y_axis_location === undefined ? "left" : attrs.y_axis_location
     delete attrs.x_axis_location
     delete attrs.y_axis_location
 
@@ -437,11 +437,11 @@ export class Figure extends BaseFigure {
   _pop_visuals(cls: HasPropsClass<HasProps>, props: Attrs, prefix: string = "",
       defaults: Attrs = {}, override_defaults: Attrs = {}): Attrs {
 
-    const _split_feature_trait = function(ft: string): string[] {
+    const _split_feature_trait = function (ft: string): string[] {
       const fta: string[] = ft.split("_", 2)
       return fta.length == 2 ? fta : fta.concat([""])
     }
-    const _is_visual = function(ft: string): boolean {
+    const _is_visual = function (ft: string): boolean {
       const [feature, trait] = _split_feature_trait(ft)
       return includes(["line", "fill", "hatch", "text", "global"], feature) && trait !== ""
     }
@@ -644,7 +644,7 @@ export class Figure extends BaseFigure {
     const coordinates = attrs.coordinates
     delete attrs.coordinates
 
-    const glyph_ca  = this._pop_visuals(cls, attrs)
+    const glyph_ca = this._pop_visuals(cls, attrs)
     const nglyph_ca = this._pop_visuals(cls, attrs, "nonselection_", glyph_ca, {alpha: 0.1})
     const sglyph_ca = this._pop_visuals(cls, attrs, "selection_", glyph_ca)
     const hglyph_ca = this._pop_visuals(cls, attrs, "hover_", glyph_ca)
@@ -676,9 +676,9 @@ export class Figure extends BaseFigure {
       view,
       glyph,
       nonselection_glyph: nglyph,
-      selection_glyph:    sglyph,
-      hover_glyph:        hglyph,
-      muted_glyph:        mglyph,
+      selection_glyph: sglyph,
+      hover_glyph: hglyph,
+      muted_glyph: mglyph,
       name,
       level,
       visible,
