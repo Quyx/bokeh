@@ -70,7 +70,7 @@ export class SymLogTickFormatter extends TickFormatter {
     let last_exponent = null
     const exponents = []
     for (const tick of ticks) {
-      let exponent: number;
+      let exponent: number
       if (tick == 0) {
         exponent = -1
       } else {
