@@ -135,6 +135,20 @@ class Test_LogColorMapper:
         )
 
 
+class Test_SymLogColorMapper:
+    def test_basic(self) -> None:
+        mapper = bmm.SymLogColorMapper()
+        check_properties_existence(mapper, [
+            "palette",
+            "domain",
+            "low",
+            "high",
+            "low_color",
+            "high_color",
+            "nan_color"],
+        )
+
+
 class Test_WeightedStackColorMapper:
     def test_basic(self) -> None:
         mapper = bmm.WeightedStackColorMapper()
