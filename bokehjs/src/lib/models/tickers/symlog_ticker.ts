@@ -34,7 +34,7 @@ export class SymLogTicker extends AdaptiveTicker {
     if (!isFinite(data_low) || !isFinite(data_high) || data_low === data_high) {
       return {major: [], minor: []}
     }
-    const base = 10
+    const base = this.base
 
     const symlog_low = SymLogScale.symlog(data_low)
     const symlog_high = SymLogScale.symlog(data_high)
@@ -113,18 +113,19 @@ export class SymLogTicker extends AdaptiveTicker {
 
         const extended_major_ticks = [low_tick_extra, ...ticks, high_tick_extra]
         for (let i = 0; i < extended_major_ticks.length - 1; i++) {
-          const step = (extended_major_ticks[i + 1] - extended_major_ticks[i]) / num_minor_ticks
+          const n_minor_ticks = extended_major_ticks[i + 1] == 0 || extended_major_ticks[i] == 0 ? num_minor_ticks : (num_minor_ticks - 1)
+          const step = (extended_major_ticks[i + 1] - extended_major_ticks[i]) / n_minor_ticks
 
-          for (let j = 0; j < num_minor_ticks; j++) {
+          for (let j = 0; j < n_minor_ticks; j++) {
             const v = extended_major_ticks[i] + j * step
             minor_ticks.push(v)
           }
         }
-
         minor_ticks = minor_ticks.filter((tick) => data_low <= tick && tick <= data_high)
       }
     }
 
+    console.log(ticks)
     return {
       major: ticks
         .filter((t) => isFinite(t))
