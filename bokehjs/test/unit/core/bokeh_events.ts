@@ -5,7 +5,7 @@ import {Serializer} from "@bokehjs/core/serialization"
 import type {BokehEvent} from "@bokehjs/core/bokeh_events"
 import {AxisClick, server_event, UserEvent} from "@bokehjs/core/bokeh_events"
 import type {Model} from "@bokehjs/model"
-import {CategoricalAxis, CategoricalScale, FactorRange, Plot, Range1d, LinearAxis, LogAxis} from "@bokehjs/models"
+import {CategoricalAxis, CategoricalScale, FactorRange, Plot, Range1d, LinearAxis, LogAxis, SymLogAxis} from "@bokehjs/models"
 import type {MessageSent, Patch} from "@bokehjs/document"
 import {TextInput} from "@bokehjs/models/widgets"
 import {PlotActions, xy} from "#framework/interactive"
@@ -92,7 +92,7 @@ describe("AxisClick event", () => {
       expect(events[0].value).to.be.equal(5)
     }
 
-    it("on the left side",  async () => test("left", xy(5, 200)))
+    it("on the left side", async () => test("left", xy(5, 200)))
     it("on the right side", async () => test("right", xy(395, 200)))
     it("on the above side", async () => test("above", xy(200, 5)))
     it("on the below side", async () => test("below", xy(200, 395)))
@@ -123,7 +123,38 @@ describe("AxisClick event", () => {
       expect(events[0].value).to.be.equal(2) // 10^2 == 100
     }
 
-    it("on the left side",  async () => test("left", xy(5, 200)))
+    it("on the left side", async () => test("left", xy(5, 200)))
+    it("on the right side", async () => test("right", xy(395, 200)))
+    it("on the above side", async () => test("above", xy(200, 5)))
+    it("on the below side", async () => test("below", xy(200, 395)))
+  })
+
+  describe("should support symlog axes", () => {
+    async function test(side: Side, pt: Point) {
+      const plot = new Plot({
+        width: 400,
+        height: 400,
+        title: null,
+        toolbar_location: null,
+        x_range: new Range1d({start: 0, end: 10000}),
+        y_range: new Range1d({start: 0, end: 10000}),
+      })
+      const axis = new SymLogAxis()
+      plot.add_layout(axis, side)
+
+      const events: AxisClick[] = []
+      axis.on_event(AxisClick, (event) => events.push(event))
+
+      const {view} = await display(plot)
+
+      const actions = new PlotActions(view, {units: "screen"})
+      await actions.tap(pt)
+
+      expect(events.length).to.be.equal(1)
+      expect(events[0].value).to.be.equal(2) // 10^2 == 100
+    }
+
+    it("on the left side", async () => test("left", xy(5, 200)))
     it("on the right side", async () => test("right", xy(395, 200)))
     it("on the above side", async () => test("above", xy(200, 5)))
     it("on the below side", async () => test("below", xy(200, 395)))
@@ -156,7 +187,7 @@ describe("AxisClick event", () => {
       expect(events[0].value).to.be.equal("c")
     }
 
-    it("on the left side",  async () => test("left", xy(5, 200)))
+    it("on the left side", async () => test("left", xy(5, 200)))
     it("on the right side", async () => test("right", xy(395, 200)))
     it("on the above side", async () => test("above", xy(200, 5)))
     it("on the below side", async () => test("below", xy(200, 395)))
