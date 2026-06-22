@@ -74,11 +74,13 @@ export class SymLogTickFormatter extends TickFormatter {
       } else {
         exponent = round(log(abs(tick)) / log(base))
       }
-      if (last_exponent != exponent) {
+      if (last_exponent == exponent) {
+        return null
+      } else if (exponent != -1 && round(base ** abs(exponent)) != abs(tick)) {
+        return null
+      } else {
         last_exponent = exponent
         exponents.push(exponent)
-      } else {
-        return null
       }
     }
     return exponents
