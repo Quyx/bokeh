@@ -28,7 +28,7 @@ export class SymLogTicker extends AdaptiveTicker {
   }
 
   private get_linear_ticks(data_low: number, data_high: number, desired_n_ticks: number): TickSpec<number> {
-    let minor_ticks: number[] = []
+    const minor_ticks: number[] = []
     const num_minor_ticks = this.num_minor_ticks
     const interval = this.get_interval(data_low, data_high, desired_n_ticks)
     const start_factor = floor(data_low / interval)
@@ -41,7 +41,7 @@ export class SymLogTicker extends AdaptiveTicker {
     if (num_minor_ticks <= 0 || ticks.length == 0) {
       return {
         major: ticks.filter((t) => isFinite(t)).filter((t) => data_low <= t && t <= data_high),
-        minor: []
+        minor: [],
       }
     }
 
@@ -104,7 +104,7 @@ export class SymLogTicker extends AdaptiveTicker {
     if (num_minor_ticks <= 0 || ticks.length == 0) {
       return {
         major: ticks.filter((t) => isFinite(t)).filter((t) => data_low <= t && t <= data_high),
-        minor: []
+        minor: [],
       }
     }
 
