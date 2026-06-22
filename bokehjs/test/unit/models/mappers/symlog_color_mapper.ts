@@ -1,4 +1,4 @@
-import {expect} from "#framework/assertions"
+simport {expect} from "#framework/assertions"
 
 import {convert_to_uint32_palette} from "@bokehjs/models/mappers/color_mapper"
 import {SymLogColorMapper} from "@bokehjs/models/mappers/symlog_color_mapper"
