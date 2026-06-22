@@ -11,6 +11,7 @@ import type {Scale} from "@bokehjs/models/scales/scale"
 import type {Range} from "@bokehjs/models/ranges/range"
 import {LinearScale} from "@bokehjs/models/scales/linear_scale"
 import {LogScale} from "@bokehjs/models/scales/log_scale"
+import {SymLogScale} from "@bokehjs/models/scales/symlog_scale"
 import {CategoricalScale} from "@bokehjs/models/scales/categorical_scale"
 import {FactorRange} from "@bokehjs/models/ranges/factor_range"
 import type {ViewOf} from "@bokehjs/core/view"
@@ -55,7 +56,7 @@ export async function create_glyph_view<G extends Glyph>(glyph: G, data: DataOf<
   return (await create_glyph_renderer_view(glyph, data, options)).glyph
 }
 
-export type AxisType = "linear" | "log" | "categorical"
+export type AxisType = "linear" | "log" | "symlog" | "categorical"
 
 function make_scale(_axis: "x" | "y", axis_type: AxisType, range?: Range): [Range, Scale] {
   switch (axis_type) {
@@ -63,6 +64,8 @@ function make_scale(_axis: "x" | "y", axis_type: AxisType, range?: Range): [Rang
       return [range ?? Range1d.create({start: 0, end: 100}), LinearScale.create()]
     case "log":
       return [range ?? Range1d.create({start: 1, end: 1000}), LogScale.create()]
+    case "symlog":
+      return [range ?? Range1d.create({start: 0, end: 1000}), SymLogScale.create()]
     case "categorical":
       return [range ?? FactorRange.create({factors: ["a", "b"], range_padding: 0}), CategoricalScale.create()]
   }
