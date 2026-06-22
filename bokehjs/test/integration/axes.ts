@@ -315,9 +315,6 @@ import {radians} from "@bokehjs/core/util/math"
   })
 })()
 
-
-
-
 describe("CategoricalAxis", () => {
   type PlotFn = (factors: Factor[], attrs: Partial<CategoricalAxis.Attrs>, options?: {minor_size?: number}) => Promise<void>
 
