@@ -118,8 +118,8 @@ describe("Plot", () => {
         height: 300,
         window_axis,
         title: `window_axis == ${window_axis}`,
-        x_range: window_axis == "x" ? r: dr,
-        y_range: window_axis == "x" ? dr: r,
+        x_range: window_axis == "x" ? r : dr,
+        y_range: window_axis == "x" ? dr : r,
       })
       const s = p.scatter({x: [1, 2, 3, 4, 5], y: [1, 2, 3, 4, 5], size: 8})
       return {p, s, r, dr}
@@ -374,6 +374,12 @@ describe("Plot", () => {
       p.scatter([1, 2, 3], [1, 40, 900], {size: 10})
       await display(p)
     })
+
+    it("should allow display on symlog axis", async () => {
+      const p = figure({width: 200, height: 200, toolbar_location: null, title: null, y_axis_type: "symlog", output_backend: "webgl"})
+      p.scatter([1, 2, 3], [1, -40, 900], {size: 10})
+      await display(p)
+    })
   })
 
   it("should support 'block' flow mode", async () => {
@@ -428,7 +434,7 @@ describe("Plot", () => {
 
       const source = new ColumnDataSource({
         data: {
-          t: [0,  1,   2,    3,     4],
+          t: [0, 1, 2, 3, 4],
           v: [1, 10, 100, 1000, 10000],
         },
       })
