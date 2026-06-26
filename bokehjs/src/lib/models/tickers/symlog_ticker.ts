@@ -93,10 +93,9 @@ export class SymLogTicker extends AdaptiveTicker {
     const positive_ticks = range(0, end_exp + 1).map((exp) => base ** abs(exp)).filter(tick => tick <= data_high)
     ticks = [...negative_ticks, 0, ...positive_ticks]
     const interval = max(1, round(ticks.length / desired_n_ticks))
-    let shift = ticks.indexOf(0) % interval
+    const shift = ticks.indexOf(0) % interval
     ticks = ticks.filter((_, i) => i % interval === shift)
     ticks = ticks.filter((tick) => data_low <= tick && tick <= data_high)
-
 
     // minor ticks
     if (num_minor_ticks <= 0 || ticks.length == 0) {
