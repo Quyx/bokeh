@@ -140,7 +140,7 @@ export class SymLogTicker extends AdaptiveTicker {
       const sgn = extended_major_ticks[i] == 0 ? sign(extended_major_ticks[i + 1]) : sign(extended_major_ticks[i])
       const low_abs = min(abs(extended_major_ticks[i]), abs(extended_major_ticks[i + 1]))
       const high_abs = max(abs(extended_major_ticks[i]), abs(extended_major_ticks[i + 1])) // > 0
-      const step = high_abs / num_minor_ticks / (1 + floor(low_abs / high_abs))
+      const step = high_abs / num_minor_ticks
       for (let j = ceil(low_abs / step); j < floor(high_abs / step); j++) {
         const v = sgn * j * step
         minor_ticks.push(v)
