@@ -76,7 +76,7 @@ export class SymLogTickFormatter extends TickFormatter {
       }
       if (last_exponent == exponent) {
         return null
-      } else if (exponent != -1 && round(base ** abs(exponent)) != abs(tick)) {
+      } else if (exponent != -1 && abs((base ** abs(exponent) - abs(tick))) > 1e-10) {
         return null
       } else {
         last_exponent = exponent
