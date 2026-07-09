@@ -119,6 +119,23 @@ For information on how to set your own ranges, see
 .. bokeh-plot:: __REPO__/examples/basic/axes/log_scale_axis.py
     :source-position: above
 
+.. _ug_basic_axes_symlog:
+
+Symlog scale axes
+~~~~~~~~~~~~~~~~~
+
+Data that covers many orders of magnitude which includes positive and negative
+values can't be displayed on log scale, because the logarithmic function is not
+defined for values less or equal to zero. To overcome this limitation a symmetric
+log scale is introduced, which applies a quasi linear transition between -1 and 1
+and a log scale otherwise.
+
+You can use the same |figure| arguments, ``x_axis_type`` and ``y_axis_type``,
+to set one or both of the axes to ``"symlog"``.
+
+.. bokeh-plot:: __REPO__/examples/basic/axes/symlog_plot.py
+    :source-position: above
+
 Mercator axes
 ~~~~~~~~~~~~~
 
