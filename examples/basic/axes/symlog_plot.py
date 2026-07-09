@@ -27,6 +27,7 @@ For the radius the following implementations are available:
 """
 
 import numpy as np
+
 from bokeh.plotting import figure, show
 
 
