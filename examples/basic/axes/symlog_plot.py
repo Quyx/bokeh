@@ -63,7 +63,7 @@ def spiral(phi: np.ndarray, case: str = "archimedean", a: float = 1, k: float = 
 
 
 phi_pm_zero = np.linspace(-3 * np.pi, 2.5 * np.pi, 10000)
-phi_gt_zero = np.linspace(2e-4, 6 * np.pi, 10000)
+phi_gt_zero = np.linspace(2e-4, 4 * np.pi, 10000)
 
 cases = ["archimedean", "fermat", "hyperbolic", "lituus", "golden", "logarithmic"]
 colors = ["blue", "green", "brown", "magenta", "gold", "black"]
