@@ -320,6 +320,7 @@ browser:
 
 * The :func:`~bokeh.transform.linear_cmap` function for linear color mapping
 * The :func:`~bokeh.transform.log_cmap` function for logarithmic color mapping
+* The :func:`~bokeh.transform.symlog_cmap` function for symmetric logarithmic color mapping
 * The :func:`~bokeh.transform.eqhist_cmap` function for equalized histogram color mapping
 
 All three functions operate similarly and accept the following arguments:
