@@ -114,7 +114,7 @@ bokeh_example_subdirs = [
     "topics/timeseries",
 ]
 
-bokeh_missing_google_api_key_ok = False
+bokeh_missing_google_api_key_ok = True
 
 if "GOOGLE_API_KEY" not in os.environ:
     print("GOOGLE_API_KEY not found in environment")
