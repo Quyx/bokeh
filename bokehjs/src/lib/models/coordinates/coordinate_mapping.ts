@@ -3,6 +3,7 @@ import {Model} from "../../model"
 import {Scale} from "../scales/scale"
 import {LinearScale} from "../scales/linear_scale"
 import {LogScale} from "../scales/log_scale"
+import {SymLogScale} from "../scales/symlog_scale"
 import {CategoricalScale} from "../scales/categorical_scale"
 import {CompositeScale} from "../scales/composite_scale"
 import {Range} from "../ranges/range"
@@ -94,7 +95,9 @@ export class CoordinateMapping extends Model {
 
     if (scale instanceof LogScale && range instanceof DataRange1d) {
       range.scale_hint = "log"
-    }
+    } else if (scale instanceof SymLogScale && range instanceof DataRange1d) {
+      range.scale_hint = "symlog"
+    } 
 
     const derived_scale = scale.clone()
     derived_scale.setv({source_range: range, target_range: target})
