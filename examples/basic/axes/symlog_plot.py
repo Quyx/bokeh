@@ -68,12 +68,12 @@ phi_gt_zero = np.linspace(2e-4, 4 * np.pi, 10000)
 cases = ["archimedean", "fermat", "hyperbolic", "lituus", "golden", "logarithmic"]
 colors = ["blue", "green", "brown", "magenta", "gold", "black"]
 
-p = figure(title="Sprials on symlog axes", x_axis_type="symlog", y_axis_type="symlog")
+p = figure(title="Spirals on symlog axes", x_axis_type="symlog", y_axis_type="symlog")
 for case, color in zip(cases, colors):
     phi = phi_pm_zero if case in ["golden", "logarithmic"] else phi_gt_zero
     c = case if case != "fermat" else "fermat's"
     x, y = spiral(phi, case=case)
-    p.line(x, y, line_width=2, color=color, legend_label=f"{case.capitalize()} spiral")
+    p.line(x, y, line_width=2, color=color, legend_label=f"{c.capitalize()} spiral")
 p.legend.location = "top_left"
 p.legend.click_policy = "hide"
 
