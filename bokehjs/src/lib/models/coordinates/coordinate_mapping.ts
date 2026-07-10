@@ -57,7 +57,7 @@ export namespace CoordinateMapping {
   }
 }
 
-export interface CoordinateMapping extends CoordinateMapping.Attrs {}
+export interface CoordinateMapping extends CoordinateMapping.Attrs { }
 
 export class CoordinateMapping extends Model {
   declare properties: CoordinateMapping.Props
@@ -93,7 +93,7 @@ export class CoordinateMapping extends Model {
       range.scale_hint = "log"
     } else if (scale instanceof SymLogScale && range instanceof DataRange1d) {
       range.scale_hint = "symlog"
-    } 
+    }
 
     const derived_scale = scale.clone()
     derived_scale.setv({source_range: range, target_range: target})
