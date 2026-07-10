@@ -412,6 +412,8 @@ different situations:
 
 * |LogTickFormatter| --- Default formatter for log axes.
 
+* |SymLogTickFormatter| --- Default formatter for symlog axes.
+
 * |SITickFormatter| --- Formatter for scaling values to a fixed or
   automatically selected SI prefix and appending a unit.
 
@@ -966,6 +968,7 @@ You can see a complete example with output in the section
 .. |CustomJSTicker| replace:: :class:`~bokeh.models.tickers.CustomJSTicker`
 .. |CustomJSTickFormatter| replace:: :class:`~bokeh.models.formatters.CustomJSTickFormatter`
 .. |LogTickFormatter| replace:: :class:`~bokeh.models.formatters.LogTickFormatter`
+.. |SymLogTickFormatter| replace:: :class:`~bokeh.models.formatters.SymLogTickFormatter`
 .. |NumeralTickFormatter| replace:: :class:`~bokeh.models.formatters.NumeralTickFormatter`
 .. |PrintfTickFormatter| replace:: :class:`~bokeh.models.formatters.PrintfTickFormatter`
 .. |SITickFormatter| replace:: :class:`~bokeh.models.formatters.SITickFormatter`
