@@ -57,7 +57,7 @@ export namespace CoordinateMapping {
   }
 }
 
-export interface CoordinateMapping extends CoordinateMapping.Attrs {}
+export interface CoordinateMapping extends CoordinateMapping.Attrs { }
 
 export class CoordinateMapping extends Model {
   declare properties: CoordinateMapping.Props
