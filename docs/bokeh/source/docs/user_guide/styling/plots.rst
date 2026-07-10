@@ -412,6 +412,8 @@ different situations:
 
 * |LogTickFormatter| --- Default formatter for log axes.
 
+* |SymLogTickFormatter| --- Default formatter for symlog axes.
+
 These default tick formatters do not expose many configurable properties.
 To control tick formatting at a finer-grained level, use one of the
 |NumeralTickFormatter| or |PrintfTickFormatter| described below.
@@ -858,6 +860,7 @@ You can see a complete example with output in the section
 .. |CustomJSTicker| replace:: :class:`~bokeh.models.tickers.CustomJSTicker`
 .. |CustomJSTickFormatter| replace:: :class:`~bokeh.models.formatters.CustomJSTickFormatter`
 .. |LogTickFormatter| replace:: :class:`~bokeh.models.formatters.LogTickFormatter`
+.. |SymLogTickFormatter| replace:: :class:`~bokeh.models.formatters.SymLogTickFormatter`
 .. |NumeralTickFormatter| replace:: :class:`~bokeh.models.formatters.NumeralTickFormatter`
 .. |PrintfTickFormatter| replace:: :class:`~bokeh.models.formatters.PrintfTickFormatter`
 .. |legend| replace:: :class:`~bokeh.plotting.figure.legend`
