@@ -57,7 +57,7 @@ export namespace CoordinateMapping {
   }
 }
 
-export interface CoordinateMapping extends CoordinateMapping.Attrs {}
+export interface CoordinateMapping extends CoordinateMapping.Attrs { }
 
 export class CoordinateMapping extends Model {
   declare properties: CoordinateMapping.Props
@@ -68,12 +68,12 @@ export class CoordinateMapping extends Model {
 
   static {
     this.define<CoordinateMapping.Props>(({Ref}) => ({
-      x_source: [ Ref(Range), () => new DataRange1d() ],
-      y_source: [ Ref(Range), () => new DataRange1d() ],
-      x_scale: [ Ref(Scale), () => new LinearScale() ],
-      y_scale: [ Ref(Scale), () => new LinearScale() ],
-      x_target: [ Ref(Range) ],
-      y_target: [ Ref(Range) ],
+      x_source: [Ref(Range), () => new DataRange1d()],
+      y_source: [Ref(Range), () => new DataRange1d()],
+      x_scale: [Ref(Scale), () => new LinearScale()],
+      y_scale: [Ref(Scale), () => new LinearScale()],
+      x_target: [Ref(Range)],
+      y_target: [Ref(Range)],
     }))
   }
 
