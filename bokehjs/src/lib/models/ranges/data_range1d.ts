@@ -211,7 +211,7 @@ export class DataRange1d extends DataRange {
       max = this._initial_end
     }
 
-    let transform, inverse_transform: (x: number) => number;
+    let transform, inverse_transform: (x: number) => number
     if (this.scale_hint == "log") {
       transform = (x: number) => Math.log10(x)
       inverse_transform = (x: number) => 10 ** x
