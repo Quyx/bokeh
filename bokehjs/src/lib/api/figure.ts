@@ -160,7 +160,7 @@ export class SubFigure extends GlyphAPI {
   }
 }
 
-export interface Figure extends GlyphAPI { }
+export interface Figure extends GlyphAPI {}
 export class Figure extends BaseFigure {
 
   get xaxes(): Axis[] {
@@ -234,7 +234,7 @@ export class Figure extends BaseFigure {
     delete attrs.y_minor_ticks
 
     const x_axis_location = attrs.x_axis_location === undefined ? "below" : attrs.x_axis_location
-    const y_axis_location = attrs.y_axis_location === undefined ? "left" : attrs.y_axis_location
+    const y_axis_location = attrs.y_axis_location === undefined ? "left"  : attrs.y_axis_location
     delete attrs.x_axis_location
     delete attrs.y_axis_location
 
@@ -570,7 +570,7 @@ export class Figure extends BaseFigure {
     const coordinates = attrs.coordinates
     delete attrs.coordinates
 
-    const glyph_ca = this._pop_visuals(cls, attrs)
+    const glyph_ca  = this._pop_visuals(cls, attrs)
     const nglyph_ca = this._pop_visuals(cls, attrs, "nonselection_", glyph_ca, {alpha: 0.1})
     const sglyph_ca = this._pop_visuals(cls, attrs, "selection_", glyph_ca)
     const hglyph_ca = this._pop_visuals(cls, attrs, "hover_", glyph_ca)
@@ -598,13 +598,13 @@ export class Figure extends BaseFigure {
     const mglyph = !is_empty(mglyph_ca) ? _make_glyph(cls, attrs, mglyph_ca) : "auto"
 
     const glyph_renderer = new GlyphRenderer({
-      data_source: source,
+      data_source:        source,
       view,
       glyph,
       nonselection_glyph: nglyph,
-      selection_glyph: sglyph,
-      hover_glyph: hglyph,
-      muted_glyph: mglyph,
+      selection_glyph:    sglyph,
+      hover_glyph:        hglyph,
+      muted_glyph:        mglyph,
       name,
       level,
       visible,

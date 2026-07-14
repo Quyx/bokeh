@@ -54,7 +54,7 @@ export namespace DataRange1d {
   }
 }
 
-export interface DataRange1d extends DataRange1d.Attrs { }
+export interface DataRange1d extends DataRange1d.Attrs {}
 
 export class DataRange1d extends DataRange {
   declare properties: DataRange1d.Props
@@ -65,24 +65,24 @@ export class DataRange1d extends DataRange {
 
   static {
     this.define<DataRange1d.Props>(({Bool, Float, Nullable}) => ({
-      range_padding: [Float, 0.1],
-      range_padding_units: [PaddingUnits, "percent"],
-      flipped: [Bool, false],
-      follow: [Nullable(StartEnd), null],
-      follow_interval: [Nullable(Float), null],
-      default_span: [Float, 2.0],
-      only_visible: [Bool, false],
+      range_padding:       [ Float, 0.1 ],
+      range_padding_units: [ PaddingUnits, "percent" ],
+      flipped:             [ Bool, false ],
+      follow:              [ Nullable(StartEnd), null ],
+      follow_interval:     [ Nullable(Float), null ],
+      default_span:        [ Float, 2.0 ],
+      only_visible:        [ Bool, false ],
     }))
 
     this.internal<DataRange1d.Internal, DataRange1d>(({Enum, Float, Nullable}) => ({
-      scale_hint: [Enum("log", "symlog", "auto"), "auto"] as const,
-      _initial_start: [Nullable(Float), (obj) => isNaN(obj.start) ? null : obj.start],
-      _initial_end: [Nullable(Float), (obj) => isNaN(obj.end) ? null : obj.end],
-      _initial_range_padding: [Float, (obj) => obj.range_padding],
-      _initial_range_padding_units: [PaddingUnits, (obj) => obj.range_padding_units],
-      _initial_follow: [Nullable(StartEnd), (obj) => obj.follow],
-      _initial_follow_interval: [Nullable(Float), (obj) => obj.follow_interval],
-      _initial_default_span: [Float, (obj) => obj.default_span],
+      scale_hint:  [Enum("log", "symlog", "auto"), "auto" ] as const,
+      _initial_start: [ Nullable(Float), (obj) => isNaN(obj.start) ? null : obj.start ],
+      _initial_end: [ Nullable(Float), (obj) => isNaN(obj.end) ? null : obj.end ],
+      _initial_range_padding: [ Float, (obj) => obj.range_padding ],
+      _initial_range_padding_units: [ PaddingUnits, (obj) => obj.range_padding_units ],
+      _initial_follow: [ Nullable(StartEnd), (obj) => obj.follow ],
+      _initial_follow_interval: [ Nullable(Float), (obj) => obj.follow_interval ],
+      _initial_default_span: [ Float, (obj) => obj.default_span ],
     }))
   }
 
@@ -161,19 +161,19 @@ export class DataRange1d extends DataRange {
       height = 1.0
     }
 
-    const xcenter = 0.5 * (bounds.x1 + bounds.x0)
-    const ycenter = 0.5 * (bounds.y1 + bounds.y0)
+    const xcenter = 0.5*(bounds.x1 + bounds.x0)
+    const ycenter = 0.5*(bounds.y1 + bounds.y0)
 
-    if (width < ratio * height) {
-      width = ratio * height
+    if (width < ratio*height) {
+      width = ratio*height
     } else {
-      height = width / ratio
+      height = width/ratio
     }
 
-    result.x1 = xcenter + 0.5 * width
-    result.x0 = xcenter - 0.5 * width
-    result.y1 = ycenter + 0.5 * height
-    result.y0 = ycenter - 0.5 * height
+    result.x1 = xcenter+0.5*width
+    result.x0 = xcenter-0.5*width
+    result.y1 = ycenter+0.5*height
+    result.y0 = ycenter-0.5*height
 
     return result
   }
@@ -269,9 +269,9 @@ export class DataRange1d extends DataRange {
     const follow_interval = this.follow_interval
     if (follow_interval != null && Math.abs(start - end) > follow_interval) {
       if (this.follow == "start") {
-        end = start + follow_sign * follow_interval
+        end = start + follow_sign*follow_interval
       } else if (this.follow == "end") {
-        start = end - follow_sign * follow_interval
+        start = end - follow_sign*follow_interval
       }
     }
 
