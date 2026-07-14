@@ -532,9 +532,9 @@ describe("ColorBar annotation", () => {
     const y = random.floats(n, 0, 5)
     const r = random.floats(n, 0.1, 0.5)
     const v = [
-      ...random.floats(n / 3, 7, 13),
-      ...random.floats(n / 3, 70, 130),
-      ...random.floats(n / 3, 700, 1300),
+      ...random.floats(n/3, 7, 13),
+      ...random.floats(n/3, 70, 130),
+      ...random.floats(n/3, 700, 1300),
     ]
 
     const p = fig([500, 200], {border_fill_color: "lightgray"})
