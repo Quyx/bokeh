@@ -1,13 +1,15 @@
 import {ContinuousScale} from "./continuous_scale"
 import type * as p from "core/properties"
 
+const {sign, log1p, abs, expm1} = Math
+
 export namespace SymLogScale {
   export type Attrs = p.AttrsOf<Props>
 
   export type Props = ContinuousScale.Props
 }
 
-export interface SymLogScale extends SymLogScale.Attrs {}
+export interface SymLogScale extends SymLogScale.Attrs { }
 
 export class SymLogScale extends ContinuousScale {
   declare properties: SymLogScale.Props
@@ -37,11 +39,11 @@ export class SymLogScale extends ContinuousScale {
   }
 
   static symlog(x: number): number {
-    return Math.sign(x) * Math.log(1 + Math.abs(x))
+    return sign(x) * log1p(abs(x))
   }
 
   static inverse_symlog(y: number): number {
-    return Math.sign(y) * (Math.exp(Math.abs(y)) - 1)
+    return sign(y) * expm1(abs(y))
   }
 
   static linear_compute(source_start: number, source_end: number, target_start: number, target_end: number): [number, number] {
@@ -52,7 +54,7 @@ export class SymLogScale extends ContinuousScale {
     //
     // [  factor  ]     [    offset    ]
     //
-    const factor = (target_end - target_start)/(source_end - source_start)
+    const factor = (target_end - target_start) / (source_end - source_start)
     const offset = -(factor * source_start) + target_start
     return [factor, offset]
   }
