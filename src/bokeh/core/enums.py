@@ -322,7 +322,7 @@ type AxisLabelStandoffModeType = Literal["tick_labels", "axis"]
 #: Specify the reference point of the ``axis_label_standoff``.
 AxisLabelStandoffMode = _string_enumeration(AxisLabelStandoffModeType)
 
-type AxisTypeType = Literal["linear", "log", "datetime", "timedelta", "mercator"]
+type AxisTypeType = Literal["linear", "log", "datetime", "timedelta", "mercator", "symlog"]
 #: Specify the type of the axis.
 AxisType = _string_enumeration(AxisTypeType)
 
