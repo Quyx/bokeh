@@ -591,7 +591,7 @@ export class Figure extends BaseFigure {
       return new cls({...attrs, ...extra_attrs})
     }
 
-    const glyph = _make_glyph(cls, attrs, glyph_ca)
+    const glyph  = _make_glyph(cls, attrs, glyph_ca)
     const nglyph = !is_empty(nglyph_ca) ? _make_glyph(cls, attrs, nglyph_ca) : "auto"
     const sglyph = !is_empty(sglyph_ca) ? _make_glyph(cls, attrs, sglyph_ca) : "auto"
     const hglyph = !is_empty(hglyph_ca) ? _make_glyph(cls, attrs, hglyph_ca) : undefined
