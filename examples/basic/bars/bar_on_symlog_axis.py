@@ -1,6 +1,6 @@
 ''' A bar chart with exponential growing values on the y-axis, where the bars start at y equals to
 zero. To overcome the definition gap of the logarithm at zero but achieve a logarithmic scaling on
-on the y-axis the y-axis-type is set to "symlog".
+the y-axis the y-axis-type is set to "symlog".
 
 .. bokeh-example-metadata::
     :apis: bokeh.plotting.figure.vbar_stack
