@@ -65,7 +65,7 @@ describe("SymLogTicker Model", () => {
       const ticker = new SymLogTicker()
       const ticks = ticker.get_ticks_no_defaults(1, 1000, NaN, 4)
       expect(ticks.major).to.be.equal([1, 10, 100])
-      expect(ticks.minor).to.be.equal([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900])
+      expect(ticks.minor).to.be.equal([2, 4, 6, 8, 20, 40, 60, 80, 200, 400, 600, 800])
     })
 
     // range below 1
@@ -74,7 +74,7 @@ describe("SymLogTicker Model", () => {
       const ticker = new SymLogTicker()
       const ticks = ticker.get_ticks_no_defaults(0, 1001, NaN, 3)
       expect(ticks.major).to.be.equal([0, 10, 1000])
-      expect(ticks.minor).to.be.equal([0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 100, 200, 300, 400, 500, 600, 700, 800, 900])
+      expect(ticks.minor).to.be.equal([0, 0, 2, 4, 6, 8, 200, 400, 600, 800])
     })
 
     it("should have correct default ticks for (0, 1001) range", () => {
