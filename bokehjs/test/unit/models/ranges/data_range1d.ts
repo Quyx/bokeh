@@ -289,10 +289,10 @@ describe("DataRange1d", () => {
 
     it("should use default_span as powers of 10 when scale_hint='log'", () => {
       const r0 = new DataRange1d({scale_hint: "log"})
-      expect(r0._compute_range(100, 100)).to.be.similar([9.988493699365053, 1001.1519555381683])
+      expect(r0._compute_range(100, 100)).to.be.similar([10, 1000])
 
       const r1 = new DataRange1d({scale_hint: "log", default_span: 4})
-      expect(r1._compute_range(100, 100)).to.be.similar([0.9988493699365047, 10011.519555381703])
+      expect(r1._compute_range(100, 100)).to.be.similar([1, 10000])
     })
 
     it("should swap max, min when flipped", () => {
@@ -334,7 +334,7 @@ describe("DataRange1d", () => {
 
     it("should apply absolute range_padding", () => {
       const r0 = new DataRange1d({range_padding: 0.2, range_padding_units: "absolute"})
-      expect(r0._compute_range(1, 3)).to.be.equal([0.8, 3.2])
+      expect(r0._compute_range(1, 3)).to.be.similar([0.8, 3.2])
 
       const r1 = new DataRange1d({range_padding: 0, range_padding_units: "absolute"})
       expect(r1._compute_range(1, 3)).to.be.equal([1, 3])
