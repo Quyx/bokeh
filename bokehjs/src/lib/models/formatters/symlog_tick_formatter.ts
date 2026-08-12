@@ -47,8 +47,7 @@ export class SymLogTickFormatter extends TickFormatter {
     if (expos == null) {
       return this.basic_formatter.format_graphics(ticks, opts)
     } else {
-      return ticks.map((tick) => {
-        const i = ticks.indexOf(tick)
+      return ticks.map((tick, i) => {
         const sign = tick < 0 ? "-" : ""
         const expo = expos[i]
         if (expo == -1) {
