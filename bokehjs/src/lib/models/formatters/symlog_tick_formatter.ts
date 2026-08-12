@@ -69,21 +69,23 @@ export class SymLogTickFormatter extends TickFormatter {
   protected _exponents(ticks: number[], base: number): number[] | null {
     let last_exponent = null
     const exponents = []
-    for (const tick of ticks) {
+    for (let i = 0; i < ticks.length; i++) {
+      const tick = ticks[i]
       let exponent: number
       if (tick == 0) {
         exponent = -1
       } else {
         exponent = round(log(abs(tick)) / log(base))
+        if (last_exponent == exponent && abs(tick) != abs(ticks[i - 1])) {
+          // tick difference too small for this base
+          return null
+        } else if (abs((base ** abs(exponent) - abs(tick))) > 1e-10) {
+          // tick not close to power of base
+          return null
+        }
       }
-      if (last_exponent == exponent) {
-        return null
-      } else if (exponent != -1 && abs((base ** abs(exponent) - abs(tick))) > 1e-10) {
-        return null
-      } else {
-        last_exponent = exponent
-        exponents.push(exponent)
-      }
+      last_exponent = exponent
+      exponents.push(exponent)
     }
     return exponents
   }
@@ -97,8 +99,7 @@ export class SymLogTickFormatter extends TickFormatter {
     if (expos == null) {
       return this.basic_formatter.doFormat(ticks, opts)
     } else {
-      return expos.map((expo) => {
-        const i = expos.indexOf(expo)
+      return expos.map((expo, i) => {
         const sign = ticks[i] < 0 ? "-" : ""
         if (expo == -1) {
           return "0"
