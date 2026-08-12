@@ -23,7 +23,6 @@ export class SymLogTicker extends AdaptiveTicker {
   static {
     this.override<SymLogTicker.Props>({
       mantissas: [1, 5],
-      num_minor_ticks: 10,
     })
   }
 
