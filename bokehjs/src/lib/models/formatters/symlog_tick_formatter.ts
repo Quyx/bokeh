@@ -7,7 +7,7 @@ import type * as p from "core/properties"
 
 // TODO: currently copy of log_tick_formatter
 
-const {abs, floor, log10} = Math
+const {abs, log, round} = Math
 
 export namespace SymLogTickFormatter {
   export type Attrs = p.AttrsOf<Props>

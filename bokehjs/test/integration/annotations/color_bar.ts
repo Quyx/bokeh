@@ -501,8 +501,8 @@ describe("ColorBar annotation", () => {
   it("should support SymLogColorMapper", async () => {
     const random = new Random(1)
 
-    const color_mapper = new SymLogColorMapper({palette: Spectral11})
-    const color_bar = new ColorBar({color_mapper, title: "Unspecified title", border_line_color: "black"})
+    const color_mapper = SymLogColorMapper.create({palette: Spectral11})
+    const color_bar = ColorBar.create({color_mapper, title: "Unspecified title", border_line_color: "black"})
 
     const n = 30
     const x = random.floats(n, 0, 10)
@@ -555,9 +555,9 @@ describe("ColorBar annotation", () => {
     const y = random.floats(n, 0, 5)
     const r = random.floats(n, 0.1, 0.5)
     const v = [
-      ...random.floats(n/3, 7, 13),
-      ...random.floats(n/3, 70, 130),
-      ...random.floats(n/3, 700, 1300),
+      ...random.floats(n / 3, 7, 13),
+      ...random.floats(n / 3, 70, 130),
+      ...random.floats(n / 3, 700, 1300),
     ]
 
     const p = fig([500, 200], {border_fill_color: "lightgray"})
