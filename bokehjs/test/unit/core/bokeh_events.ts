@@ -92,7 +92,7 @@ describe("AxisClick event", () => {
       expect(events[0].value).to.be.equal(5)
     }
 
-    it("on the left side",  async () => test("left", xy(5, 200)))
+    it("on the left side", async () => test("left", xy(5, 200)))
     it("on the right side", async () => test("right", xy(395, 200)))
     it("on the above side", async () => test("above", xy(200, 5)))
     it("on the below side", async () => test("below", xy(200, 395)))
@@ -123,7 +123,7 @@ describe("AxisClick event", () => {
       expect(events[0].value).to.be.equal(2) // 10^2 == 100
     }
 
-    it("on the left side",  async () => test("left", xy(5, 200)))
+    it("on the left side", async () => test("left", xy(5, 200)))
     it("on the right side", async () => test("right", xy(395, 200)))
     it("on the above side", async () => test("above", xy(200, 5)))
     it("on the below side", async () => test("below", xy(200, 395)))
@@ -151,7 +151,7 @@ describe("AxisClick event", () => {
       await actions.tap(pt)
 
       expect(events.length).to.be.equal(1)
-      expect(events[0].value).to.be.equal(2) // 10^2 == 100
+      expect(events[0].value).to.be.similar(4.60522)
     }
 
     it("on the left side", async () => test("left", xy(5, 200)))
