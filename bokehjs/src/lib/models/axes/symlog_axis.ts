@@ -16,8 +16,7 @@ export class SymLogAxisView extends ContinuousAxisView {
         const {x0, width} = this.bbox
         const s0 = SymLogScale.symlog(start)
         const s1 = SymLogScale.symlog(end)
-        const symlog_value = s0 + (sx - x0) / width * (s1 - s0)
-        return SymLogScale.inverse_symlog(symlog_value)
+        return s0 + (sx - x0) / width * (s1 - s0)
       }
 
       case 1: {
@@ -26,9 +25,7 @@ export class SymLogAxisView extends ContinuousAxisView {
         const s1 = SymLogScale.symlog(end)
         const t = 1 - (sy - y0) / height
 
-        const symlog_value = s0 + t * (s1 - s0)
-
-        return SymLogScale.inverse_symlog(symlog_value)
+        return s0 + t * (s1 - s0)
       }
     }
 
@@ -45,7 +42,7 @@ export namespace SymLogAxis {
   }
 }
 
-export interface SymLogAxis extends SymLogAxis.Attrs {}
+export interface SymLogAxis extends SymLogAxis.Attrs { }
 
 export class SymLogAxis extends ContinuousAxis {
   declare properties: SymLogAxis.Props
@@ -62,7 +59,7 @@ export class SymLogAxis extends ContinuousAxis {
     this.prototype.default_view = SymLogAxisView
 
     this.override<SymLogAxis.Props>({
-      ticker:    () => new SymLogTicker(),
+      ticker: () => new SymLogTicker(),
       formatter: () => new SymLogTickFormatter(),
     })
   }
