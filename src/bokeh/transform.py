@@ -64,9 +64,6 @@ __all__ = (
     'jitter',
     'linear_cmap',
     'log_cmap',
-    'symlog_cmap',
-    'stack',
-    'symlog_cmap',
     'stack',
     'symlog_cmap',
     'transform',
@@ -450,171 +447,12 @@ def stack(*fields: str) -> Expr:
 
 def symlog_cmap(
     field_name: str,
-    palette: Sequence[ColorLike],
+    palette: PaletteLike,
     low: float,
     high: float,
-    low_color: ColorLike | None = None,
-    high_color: ColorLike | None = None,
-    nan_color: ColorLike = "gray",
-) -> Field:
-    ''' Create a ``DataSpec`` dict that applies a client-side ``SymLogColorMapper``
-    transformation to a ``ColumnDataSource`` column.
-
-    Args:
-        field_name (str) : a field name to configure ``DataSpec`` with
-
-        palette (seq[ColorLike]) : a list of colors to use for colormapping
-
-        low (float) : a minimum value of the range to map into the palette.
-            Values below this are clamped to ``low``.
-
-        high (float) : a maximum value of the range to map into the palette.
-            Values above this are clamped to ``high``.
-
-        low_color (ColorLike, optional) : color to be used if data is lower than
-            ``low`` value. If None, values lower than ``low`` are mapped to the
-            first color in the palette. (default: None)
-
-        high_color (ColorLike, optional) : color to be used if data is higher than
-            ``high`` value. If None, values higher than ``high`` are mapped to
-            the last color in the palette. (default: None)
-
-        nan_color (ColorLike, optional) : a default color to use when mapping data
-            from a column does not succeed (default: "gray")
-
-    '''
-    return Field(
-        field_name,
-        SymLogColorMapper(
-            palette=palette,
-            low=low,
-            high=high,
-            nan_color=nan_color,
-            low_color=low_color,
-            high_color=high_color,
-        ),
-    )
-
-def symlog_cmap(
-    field_name: str,
-    palette: Sequence[ColorLike],
-    low: float,
-    high: float,
-    low_color: ColorLike | None = None,
-    high_color: ColorLike | None = None,
-    nan_color: ColorLike = "gray",
-) -> Field:
-    ''' Create a ``DataSpec`` dict that applies a client-side ``SymLogColorMapper``
-    transformation to a ``ColumnDataSource`` column.
-
-    Args:
-        field_name (str) : a field name to configure ``DataSpec`` with
-
-        palette (seq[ColorLike]) : a list of colors to use for colormapping
-
-        low (float) : a minimum value of the range to map into the palette.
-            Values below this are clamped to ``low``.
-
-        high (float) : a maximum value of the range to map into the palette.
-            Values above this are clamped to ``high``.
-
-        low_color (ColorLike, optional) : color to be used if data is lower than
-            ``low`` value. If None, values lower than ``low`` are mapped to the
-            first color in the palette. (default: None)
-
-        high_color (ColorLike, optional) : color to be used if data is higher than
-            ``high`` value. If None, values higher than ``high`` are mapped to
-            the last color in the palette. (default: None)
-
-        nan_color (ColorLike, optional) : a default color to use when mapping data
-            from a column does not succeed (default: "gray")
-
-    '''
-    return Field(
-        field_name,
-        SymLogColorMapper(
-            palette=palette,
-            low=low,
-            high=high,
-            nan_color=nan_color,
-            low_color=low_color,
-            high_color=high_color,
-        ),
-    )
-
-def symlog_cmap(
-    field_name: str,
-    palette: Sequence[ColorLike],
-    low: float,
-    high: float,
-    low_color: ColorLike | None = None,
-    high_color: ColorLike | None = None,
-    nan_color: ColorLike = "gray",
-) -> Field:
-    ''' Create a ``DataSpec`` dict that applies a client-side ``SymLogColorMapper``
-    transformation to a ``ColumnDataSource`` column.
-
-    Args:
-        field_name (str) : a field name to configure ``DataSpec`` with
-
-        palette (seq[ColorLike]) : a list of colors to use for colormapping
-
-        low (float) : a minimum value of the range to map into the palette.
-            Values below this are clamped to ``low``.
-
-        high (float) : a maximum value of the range to map into the palette.
-            Values above this are clamped to ``high``.
-
-        low_color (ColorLike, optional) : color to be used if data is lower than
-            ``low`` value. If None, values lower than ``low`` are mapped to the
-            first color in the palette. (default: None)
-
-        high_color (ColorLike, optional) : color to be used if data is higher than
-            ``high`` value. If None, values higher than ``high`` are mapped to
-            the last color in the palette. (default: None)
-
-        nan_color (ColorLike, optional) : a default color to use when mapping data
-            from a column does not succeed (default: "gray")
-
-    '''
-    return Field(
-        field_name,
-        SymLogColorMapper(
-            palette=palette,
-            low=low,
-            high=high,
-            nan_color=nan_color,
-            low_color=low_color,
-            high_color=high_color,
-        ),
-    )
-
-def stack(*fields: str) -> Expr:
-    ''' Create a Create a ``DataSpec`` dict to generate a ``Stack`` expression
-    for a ``ColumnDataSource``.
-
-    Examples:
-
-        .. code-block:: python
-
-            p.vbar(bottom=stack("sales", "marketing"), ...
-
-        will generate a ``Stack`` that sums the ``"sales"`` and ``"marketing"``
-        columns of a data source, and use those values as the ``top``
-        coordinate for a ``VBar``.
-
-    '''
-
-    return Expr(Stack(fields=fields))
-
-def symlog_cmap(
-    field_name: str,
-    palette: Sequence[ColorLike],
-    low: float,
-    high: float,
-    low_color: ColorLike | None = None,
-    high_color: ColorLike | None = None,
-    nan_color: ColorLike = "gray",
+    low_color: ColorType | None = None,
+    high_color: ColorType | None = None,
+    nan_color: ColorType = "gray",
 ) -> Field:
     ''' Create a ``DataSpec`` dict that applies a client-side ``SymLogColorMapper``
     transformation to a ``ColumnDataSource`` column.
