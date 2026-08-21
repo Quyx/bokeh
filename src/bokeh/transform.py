@@ -460,7 +460,7 @@ def symlog_cmap(
     Args:
         field_name (str) : a field name to configure ``DataSpec`` with
 
-        palette (seq[ColorLike]) : a list of colors to use for colormapping
+        palette (PaletteLike) : a list of colors to use for colormapping
 
         low (float) : a minimum value of the range to map into the palette.
             Values below this are clamped to ``low``.
@@ -468,15 +468,15 @@ def symlog_cmap(
         high (float) : a maximum value of the range to map into the palette.
             Values above this are clamped to ``high``.
 
-        low_color (ColorLike, optional) : color to be used if data is lower than
+        low_color (ColorType, optional) : color to be used if data is lower than
             ``low`` value. If None, values lower than ``low`` are mapped to the
             first color in the palette. (default: None)
 
-        high_color (ColorLike, optional) : color to be used if data is higher than
+        high_color (ColorType, optional) : color to be used if data is higher than
             ``high`` value. If None, values higher than ``high`` are mapped to
             the last color in the palette. (default: None)
 
-        nan_color (ColorLike, optional) : a default color to use when mapping data
+        nan_color (ColorType, optional) : a default color to use when mapping data
             from a column does not succeed (default: "gray")
 
     '''
