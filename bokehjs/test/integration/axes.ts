@@ -65,7 +65,7 @@ import {radians} from "@bokehjs/core/util/math"
         x_scale: LinearScale.create(),
         y_scale: axis_type == "linear" ? LinearScale.create() : (axis_type == "log" ? LogScale.create() : SymLogScale.create()),
         x_range: Range1d.create({start: 0, end: 1}),
-        y_range: axis_type == "linear" ? new Range1d({start: 100, end: 200}) :  (axis_type == "log" ? Range1d.create({start: 10 ** -2, end: 10 ** 11}) : Range1d.create({start: -(10 ** 3), end: 10 ** 3})),
+        y_range: axis_type == "linear" ? Range1d.create({start: 100, end: 200}) : (axis_type == "log" ? Range1d.create({start: 10 ** -2, end: 10 ** 11}) : Range1d.create({start: -(10 ** 3), end: 10 ** 3})),
         min_border_top: 20,
         min_border_bottom: 20,
         min_border_left: 0,
@@ -74,7 +74,7 @@ import {radians} from "@bokehjs/core/util/math"
         toolbar_location: null,
       })
 
-      const axis = axis_type == "linear" ? LinearAxis.create(attrs)  : : (axis_type == "log" ? LogAxis.create(attrs) : SymLogAxis.create(attrs))
+      const axis = axis_type == "linear" ? LinearAxis.create(attrs) : (axis_type == "log" ? LogAxis.create(attrs) : SymLogAxis.create(attrs))
       if (options?.num_ticks != null) {
         axis.ticker.desired_num_ticks = options.num_ticks
       }
@@ -221,16 +221,16 @@ import {radians} from "@bokehjs/core/util/math"
 
     describe("with fixed location", () => {
       it("should be added without effecting the position of the toolbar", async () => {
-        const tools = [new PanTool(), new WheelZoomTool()]
+        const tools = [PanTool.create(), WheelZoomTool.create()]
         const p = fig([300, 300], {toolbar_location: "right"})
         p.scatter([1, 2, 3], [1, 2, 3])
-        p.extra_x_ranges = {["x"]: new Range1d({start: 0.9, end: 3.1})}
-        p.extra_y_ranges = {["y"]: new Range1d({start: 0.9, end: 3.1})}
-        p.add_layout(new LinearAxis({x_range_name: "x", fixed_location: 1.5}), "below")
-        p.add_layout(new LinearAxis({y_range_name: "y", fixed_location: 2.5}), "right")
-        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "above"})}), "above")
-        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "left"})}), "left")
-        p.add_layout(new ToolbarPanel({toolbar: new Toolbar({tools, location: "below"})}), "below")
+        p.extra_x_ranges = {["x"]: Range1d.create({start: 0.9, end: 3.1})}
+        p.extra_y_ranges = {["y"]: Range1d.create({start: 0.9, end: 3.1})}
+        p.add_layout(LinearAxis.create({x_range_name: "x", fixed_location: 1.5}), "below")
+        p.add_layout(LinearAxis.create({y_range_name: "y", fixed_location: 2.5}), "right")
+        p.add_layout(ToolbarPanel.create({toolbar: Toolbar.create({tools, location: "above"})}), "above")
+        p.add_layout(ToolbarPanel.create({toolbar: Toolbar.create({tools, location: "left"})}), "left")
+        p.add_layout(ToolbarPanel.create({toolbar: Toolbar.create({tools, location: "below"})}), "below")
         await display(p)
       })
     })

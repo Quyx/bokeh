@@ -131,15 +131,15 @@ describe("AxisClick event", () => {
 
   describe("should support symlog axes", () => {
     async function test(side: Side, pt: Point) {
-      const plot = new Plot({
+      const plot = Plot.create({
         width: 400,
         height: 400,
         title: null,
         toolbar_location: null,
-        x_range: new Range1d({start: 0, end: 10000}),
-        y_range: new Range1d({start: 0, end: 10000}),
+        x_range: Range1d.create({start: 0, end: 10000}),
+        y_range: Range1d.create({start: 0, end: 10000}),
       })
-      const axis = new SymLogAxis()
+      const axis = SymLogAxis.create()
       plot.add_layout(axis, side)
 
       const events: AxisClick[] = []

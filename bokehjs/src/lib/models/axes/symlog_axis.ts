@@ -59,8 +59,8 @@ export class SymLogAxis extends ContinuousAxis {
     this.prototype.default_view = SymLogAxisView
 
     this.override<SymLogAxis.Props>({
-      ticker: () => new SymLogTicker(),
-      formatter: () => new SymLogTickFormatter(),
+      ticker: () => SymLogTicker.create(),
+      formatter: () => SymLogTickFormatter.create(),
     })
   }
 }

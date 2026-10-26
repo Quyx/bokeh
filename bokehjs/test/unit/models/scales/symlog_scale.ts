@@ -6,9 +6,9 @@ import {Range1d} from "@bokehjs/models/ranges/range1d"
 describe("SymLogScale module", () => {
 
   function mkscale(): SymLogScale {
-    return new SymLogScale({
-      source_range: new Range1d({start: 0, end: 1000}),
-      target_range: new Range1d({start: -100, end: 100}),
+    return SymLogScale.create({
+      source_range: Range1d.create({start: 0, end: 1000}),
+      target_range: Range1d.create({start: -100, end: 100}),
     })
   }
 

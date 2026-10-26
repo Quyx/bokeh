@@ -260,10 +260,6 @@ class LogColorMapper(ContinuousColorMapper):
 
     '''
 
-    # explicit __init__ to support Init signatures
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-
 class SymLogColorMapper(ContinuousColorMapper):
     ''' Map numbers in a range [*low*, *high*] into a sequence of colors
     (a palette) on a symmetric logarithm scale.
@@ -278,10 +274,6 @@ class SymLogColorMapper(ContinuousColorMapper):
        19.09 <= x         : 'blue'    # values > high are clamped
 
     '''
-
-    # explicit __init__ to support Init signatures
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
 
 @abstract
 class ScanningColorMapper(ContinuousColorMapper):

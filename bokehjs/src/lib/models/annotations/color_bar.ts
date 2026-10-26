@@ -63,6 +63,8 @@ export class ColorBarView extends BaseColorBarView {
       return CategoricalAxis.create()
     } else if (color_mapper instanceof LogColorMapper) {
       return LogAxis.create()
+    } else if (color_mapper instanceof SymLogColorMapper) {
+      return SymLogAxis.create()
     } else {
       return LinearAxis.create()
     }
@@ -73,6 +75,8 @@ export class ColorBarView extends BaseColorBarView {
 
     if (this._ticker instanceof LogTicker) {
       return LogTickFormatter.create()
+    } else if (color_mapper instanceof SymLogTicker) {
+      return SymLogTickFormatter.create()
     } else if (color_mapper instanceof CategoricalColorMapper) {
       return CategoricalTickFormatter.create()
     } else {

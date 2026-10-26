@@ -293,10 +293,6 @@ class SymLogAxis(ContinuousAxis):
 
     '''
 
-    # explicit __init__ to support Init signatures
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-
     ticker = Override(default=InstanceDefault(SymLogTicker))
 
     formatter = Override(default=InstanceDefault(SymLogTickFormatter))
