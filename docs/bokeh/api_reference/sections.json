@@ -50,6 +50,7 @@
       "LinearAxis",
       "LogAxis",
       "MercatorAxis",
+      "SymLogAxis",
       "TimedeltaAxis"
     ]
   },
@@ -142,6 +143,7 @@
       "PrintfTickFormatter",
       "ScaledTickFormatter",
       "SITickFormatter",
+      "SymLogTickFormatter",
       "TickFormatter",
       "TimedeltaTickFormatter"
     ]
@@ -284,6 +286,7 @@
       "LogColorMapper",
       "Mapper",
       "StackColorMapper",
+      "SymLogColorMapper",
       "WeightedStackColorMapper"
     ]
   },
@@ -346,7 +349,8 @@
       "CompositeScale",
       "LinearScale",
       "LogScale",
-      "Scale"
+      "Scale",
+      "SymLogScale"
     ]
   },
   {
@@ -422,6 +426,7 @@
       "MonthsTicker",
       "ScaledTicker",
       "SingleIntervalTicker",
+      "SymLogTicker",
       "Ticker",
       "TimedeltaTicker",
       "YearsTicker"
