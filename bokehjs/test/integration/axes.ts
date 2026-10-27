@@ -318,7 +318,7 @@ import {radians} from "@bokehjs/core/util/math"
     })
   })
 
-  describe("LogAxis", () => {
+  describe("SymLogAxis", () => {
     describe("in horizontal orientation", () => {
       describe("above a plot", () => test(hplot("above", "symlog")))
       describe("below a plot", () => test(hplot("below", "symlog")))
